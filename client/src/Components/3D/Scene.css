@@ -1,0 +1,18 @@
+.buttonScene {
+    border-radius: 10%;
+    position: absolute;
+    padding: 1.5% 3% 1.5% 3%;
+    top: 10%;
+    right: 46%;
+    opacity: 1;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    transition: width 2s ease-in .5s;
+}
+
+Canvas {
+    width: 100vw;
+    height: 100vh;
+}
