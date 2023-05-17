@@ -1,8 +1,10 @@
+// Importez les modules nécessaires
 import React, { useEffect, useState } from "react";
 import { Canvas } from "react-three-fiber";
 import { OrbitControls } from "@react-three/drei";
+import axios from "axios";
 
-// 3D Planettes
+// Importez vos composants 3D pour chaque planète ici
 import Jupiter from '../3D/Jupiter';
 import Mars from '../3D/Mars';
 import Mercure from '../3D/Mercure';
@@ -14,24 +16,22 @@ import Neptune from "../3D/Neptune";
 
 import '../../../src/styles/Planet.css'
 import Navbar from '../Navbar';
-
-
 const Planet = () => {
   const [planets, setPlanets] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState('terre'); // la planète par défaut est la Terre
   const [messages, setMessages] = useState([]);
-
+  const [inputMessage, setInputMessage] = useState('');
+  const [stats, setStats] = useState({});
 
   const fetchData = (planet) => {
     fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${planet}`)
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         setPlanets(data);
         console.log(data);
       });
   };
+
   function convertKelvinToCelsius(tempKelvin) {
     const tempCelsius = tempKelvin - 273.15;
     return Math.round(tempCelsius * 10) / 10; // Arrondi à un chiffre après la virgule
@@ -43,6 +43,17 @@ const Planet = () => {
 
   const handlePlanetChange = (planet) => {
     setSelectedPlanet(planet);
+  };
+
+  const handleMessageSubmit = (event) => {
+    event.preventDefault();
+
+    if (inputMessage.trim() === '') {
+      return;
+    }
+
+    setMessages(prevMessages => [...prevMessages, inputMessage]);
+    setInputMessage('');
   };
 
   return (
@@ -68,14 +79,9 @@ const Planet = () => {
             <p>{planets.sideralOrbit}</p>
           </div>
           <div className="planetDesc-data">
-            <h3>Rotation sur elle meme:</h3>
+            <h3>Rotation sur elle-même:</h3>
             <p>{planets.sideralRotation}</p>
           </div>
-          {/* <div className="planetDesc-data">
-            <h3>Nombre de satelite:</h3>
-            <p>{planets.moons.length}</p>
-          </div> */}
-
         </div>
         <div className="planetVisu">
           <Canvas>
@@ -100,9 +106,38 @@ const Planet = () => {
           <button onClick={() => handlePlanetChange('neptune')}>Neptune</button>
           <button onClick={() => handlePlanetChange('uranus')}>Uranus</button>
         </div>
+        <div className="planetMessages">
+          <h2>Messages sur {selectedPlanet}</h2>
+          <form onSubmit={handleMessageSubmit}>
+            <input
+              type="text"
+              name="message"
+              placeholder="Votre message"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+            />
+            <button type="submit">Envoyer</button>
+          </form>
+          <ul>
+            {messages.map((message, index) => (
+              <li key={index}>{message}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="planetStats">
+          <h2>Statistiques des messages</h2>
+          <ul>
+            {Object.keys(stats).map((planet, index) => (
+              <li key={index}>
+                {planet}: {stats[planet]}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Planet;
+
