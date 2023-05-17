@@ -124,16 +124,7 @@ const Planet = () => {
             ))}
           </ul>
         </div>
-        <div className="planetStats">
-          <h2>Statistiques des messages</h2>
-          <ul>
-            {Object.keys(stats).map((planet, index) => (
-              <li key={index}>
-                {planet}: {stats[planet]}
-              </li>
-            ))}
-          </ul>
-        </div>
+
       </div>
     </div>
   );
