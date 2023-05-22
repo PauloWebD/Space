@@ -1,36 +1,42 @@
-import { TextureLoader } from 'three';
+import { TextureLoader, DoubleSide } from 'three';
 import React, { useRef, useState } from 'react';
 import { useFrame } from 'react-three-fiber';
-import uranus from "./systemSolaire/uranus.jpg";
-
+import uranusmap from "./systemSolaire/uranusmap.jpg";
+import uranusringcolor from "./systemSolaire/uranusringcolour.jpg";
 
 const Uranus = (props) => {
     const meshRef = useRef();
+    const ringRef = useRef();
     const [isActive, setIsActive] = useState(false);
     const { position } = props;
     const name = 'Uranus';
 
     useFrame((state) => {
-        // meshRef.current.position.x = Math.sin(state.clock.getElapsedTime() * 0.024) * 385;
-        // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.024) * 385;
         meshRef.current.rotation.y += 0.01;
+        ringRef.current.rotation.y += 0.01;
     });
-// size 5
+
     return (
         <>
             <mesh ref={meshRef} position={position} onClick={() => setIsActive(!isActive)}>
                 <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(uranus)}
-                />
+                <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusmap)} />
             </mesh>
-            {
-                isActive && (
-                    console.log(name)
-                )
-            }
+            <mesh ref={ringRef} position={position}>
+                <group rotation={[Math.PI / 2, 0, 0]}>
+                    <mesh>
+                        <ringBufferGeometry attach="geometry" args={[1.6, 2.2, 64]} />
+                        <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusringcolor)} side={DoubleSide} />
+                    </mesh>
+                </group>
+            </mesh>
+
+
+            {isActive && (
+                console.log(name)
+            )}
         </>
     );
 };
+
 export default Uranus;

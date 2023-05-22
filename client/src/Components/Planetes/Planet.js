@@ -19,9 +19,6 @@ import Navbar from '../Navbar';
 const Planet = () => {
   const [planets, setPlanets] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState('terre'); // la planète par défaut est la Terre
-  const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [stats, setStats] = useState({});
 
   const fetchData = (planet) => {
     fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${planet}`)
@@ -43,17 +40,6 @@ const Planet = () => {
 
   const handlePlanetChange = (planet) => {
     setSelectedPlanet(planet);
-  };
-
-  const handleMessageSubmit = (event) => {
-    event.preventDefault();
-
-    if (inputMessage.trim() === '') {
-      return;
-    }
-
-    setMessages(prevMessages => [...prevMessages, inputMessage]);
-    setInputMessage('');
   };
 
   return (
@@ -106,25 +92,6 @@ const Planet = () => {
           <button onClick={() => handlePlanetChange('neptune')}>Neptune</button>
           <button onClick={() => handlePlanetChange('uranus')}>Uranus</button>
         </div>
-        <div className="planetMessages">
-          <h2>Messages sur {selectedPlanet}</h2>
-          <form onSubmit={handleMessageSubmit}>
-            <input
-              type="text"
-              name="message"
-              placeholder="Votre message"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-            />
-            <button type="submit">Envoyer</button>
-          </form>
-          <ul>
-            {messages.map((message, index) => (
-              <li key={index}>{message}</li>
-            ))}
-          </ul>
-        </div>
-
       </div>
     </div>
   );
