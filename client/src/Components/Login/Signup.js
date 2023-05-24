@@ -24,7 +24,7 @@ const Signup = () => {
 
         // Make API call to add the user
         try {
-            const response = await fetch('http://localhost:3001/api/signup', {
+            const response = await fetch('http://localhost:3001/api/users/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

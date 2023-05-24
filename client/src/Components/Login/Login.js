@@ -13,10 +13,9 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:3001/api/login', {
+        axios.post('http://localhost:3001/api/users/login', {
             username: username,
-            password: password,
-            email: email,
+            password: password
 
         })
             .then(response => {
@@ -49,10 +48,6 @@ const Login = () => {
                         <label>
                             <p>Password :</p>
                             <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
-                        </label>
-                        <label>
-                            <p>email :</p>
-                            <input type='email' value={email} onChange={e => setEmail(e.target.value)} />
                         </label>
 
 
