@@ -15,7 +15,7 @@ const Neptune = (props) => {
         // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.019) * 400;
         meshRef.current.rotation.y += 0.01;
     });
-// size  4.9
+    // size  4.9
     return (
         <>
             <mesh ref={meshRef} position={position} onClick={() => setIsActive(!isActive)}>

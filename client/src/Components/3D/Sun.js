@@ -10,14 +10,15 @@ const Sun = () => {
     const meshRef = useRef();
 
     useFrame((state) => {
-        meshRef.current.rotation.y += 0.0001;
+        meshRef.current.rotation.y += 0.0071;
     });
-    // size 139
+
     return (
         <mesh ref={meshRef} position={[0, 0, 0]} >
-            <sphereBufferGeometry args={[1.2, 32, 32]} />
+            <sphereBufferGeometry />
             <meshBasicMaterial map={new TextureLoader().load(sun)} />
         </mesh>
     );
 };
+
 export default Sun;

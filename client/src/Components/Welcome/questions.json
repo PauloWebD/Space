@@ -1,0 +1,102 @@
+[
+    {
+        "question": "Quelle est la planète la plus proche du Soleil ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Terre",
+            "Mars"
+        ],
+        "answer": "Mercure"
+    },
+    {
+        "question": "Quelle est la plus grande planète du système solaire ?",
+        "options": [
+            "Jupiter",
+            "Saturne",
+            "Uranus",
+            "Neptune"
+        ],
+        "answer": "Jupiter"
+    },
+    {
+        "question": "Quelle est la planète la plus proche de la Terre ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Mars",
+            "Jupiter"
+        ],
+        "answer": "Vénus"
+    },
+    {
+        "question": "Quelle planète est souvent appelée la 'planète rouge' ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Terre",
+            "Mars"
+        ],
+        "answer": "Mars"
+    },
+    {
+        "question": "Quelle est la plus petite planète du système solaire ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Terre",
+            "Mars"
+        ],
+        "answer": "Mercure"
+    },
+    {
+        "question": "Quelle planète est connue pour ses célèbres anneaux ?",
+        "options": [
+            "Jupiter",
+            "Saturne",
+            "Uranus",
+            "Neptune"
+        ],
+        "answer": "Saturne"
+    },
+    {
+        "question": "Quelle planète est la plus éloignée du Soleil ?",
+        "options": [
+            "Jupiter",
+            "Saturne",
+            "Uranus",
+            "Neptune"
+        ],
+        "answer": "Neptune"
+    },
+    {
+        "question": "Quelle planète est souvent appelée la 'planète bleue' ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Terre",
+            "Mars"
+        ],
+        "answer": "Terre"
+    },
+    {
+        "question": "Quelle est la plus chaude des planètes du système solaire ?",
+        "options": [
+            "Mercure",
+            "Vénus",
+            "Terre",
+            "Mars"
+        ],
+        "answer": "Vénus"
+    },
+    {
+        "question": "Quelle planète possède un grand anneau incliné ?",
+        "options": [
+            "Jupiter",
+            "Saturne",
+            "Uranus",
+            "Neptune"
+        ],
+        "answer": "Uranus"
+    }
+]
