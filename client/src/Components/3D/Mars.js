@@ -15,15 +15,12 @@ const Mars = (props) => {
         // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.08) * 260;
         meshRef.current.rotation.y += 0.01;
     });
-// size 0.6
+    // size 0.6
     return (
         <>
             <mesh ref={meshRef} position={position} onClick={() => setIsActive(!isActive)}>
                 <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(mars)}
-                />
+
             </mesh>
             {isActive && (
                 console.log(name)

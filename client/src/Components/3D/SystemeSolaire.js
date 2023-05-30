@@ -7,8 +7,15 @@ import mercure from "./systemSolaire/mercure.jpg";
 import sun from "./systemSolaire/sun.jpg";
 import venus from "./systemSolaire/venus.jpg";
 import daymap from "./systemSolaire/daymap.jpg";
+import mars from "./systemSolaire/mars.jpg";
+import jupiter from "./systemSolaire/jupiter.jpg";
+import saturn from "./systemSolaire/saturn.jpg";
+import uranusmap from "./systemSolaire/uranusmap.jpg";
+import neptune from "./systemSolaire/neptune.jpg";
+
 
 const SolarSystem = () => {
+
     return (
         <Canvas>
             <ambientLight />
@@ -16,13 +23,13 @@ const SolarSystem = () => {
 
             {/* Sun */}
             <mesh position={[0, 0, 0]} >
-                <sphereBufferGeometry />
+                <sphereBufferGeometry attach="geometry" args={[10.3, 32, 32]} />
                 <meshBasicMaterial map={new TextureLoader().load(sun)} />
             </mesh>
 
             {/* Mercury */}
-            <mesh position={[20, 0, 0]} >
-                <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
+            <mesh position={[14, 0, 0]} >
+                <sphereBufferGeometry attach="geometry" args={[0.03, 32, 32]} />
                 <meshBasicMaterial
                     attach="material"
                     map={new TextureLoader().load(mercure)}
@@ -30,8 +37,8 @@ const SolarSystem = () => {
             </mesh>
 
             {/* Venus */}
-            <mesh position={[30, 0, 0]}>
-                <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
+            <mesh position={[17, 0, 0]}>
+                <sphereBufferGeometry attach="geometry" args={[0.09, 32, 32]} />
                 <meshBasicMaterial
                     attach="material"
                     map={new TextureLoader().load(venus)}
@@ -39,42 +46,53 @@ const SolarSystem = () => {
             </mesh>
 
             {/* Earth */}
-            <mesh position={[50, 0, 0]}>
-                <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
+            <mesh position={[20, 0, 0]}>
+                <sphereBufferGeometry attach="geometry" args={[0.12, 32, 32]} />
                 <meshBasicMaterial attach="material" map={new TextureLoader().load(daymap)} />
             </mesh>
 
             {/* Mars */}
-            <mesh position={[90, 0, 0]} rotation={[0, 0, 0.15]}>
-                <sphereGeometry args={[0.4, 32, 32]} />
-                <meshLambertMaterial color={0xff0000} />
+            <mesh position={[25, 0, 0]} rotation={[0, 0, 0.15]}>
+                <sphereGeometry args={[0.06, 32, 32]} />
+                <meshBasicMaterial
+                    attach="material"
+                    map={new TextureLoader().load(mars)}
+                />
             </mesh>
 
             {/* Jupiter */}
-            <mesh position={[120, 0, 0]} rotation={[0, 0, 0.1]}>
-                <sphereGeometry args={[0.9, 32, 32]} />
-                <meshLambertMaterial color={0xff8c00} />
+            <mesh position={[52, 0, 0]} rotation={[0, 0, 0.1]}>
+                <sphereGeometry args={[1.39, 32, 32]} />
+                <meshBasicMaterial
+                    attach="material"
+                    map={new TextureLoader().load(jupiter)}
+                />
             </mesh>
 
             {/* Saturn */}
-            <mesh position={[150, 0, 0]} rotation={[0, 0, 0.07]}>
-                <sphereGeometry args={[0.8, 32, 32]} />
-                <meshLambertMaterial color={0xffcc00} />
+            <mesh position={[95, 0, 0]} rotation={[0, 0, 0.07]}>
+                <sphereGeometry args={[0.93, 32, 32]} />
+                <meshBasicMaterial attach="material" map={new TextureLoader().load(saturn)} />
             </mesh>
 
             {/* Uranus */}
-            <mesh position={[180, 0, 0]} rotation={[0, 0, 0.04]}>
-                <sphereGeometry args={[0.7, 32, 32]} />
-                <meshLambertMaterial color={0x00ffff} />
+            <mesh position={[190, 0, 0]} rotation={[0, 0, 0.04]}>
+                <sphereGeometry args={[0.47, 32, 32]} />
+                <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusmap)} />
             </mesh>
 
             {/* Neptune */}
-            <mesh position={[210, 0, 0]} rotation={[0, 0, 0.02]}>
-                <sphereGeometry args={[0.7, 32, 32]} />
-                <meshLambertMaterial color={0x00008b} />
+            <mesh position={[300, 0, 0]} rotation={[0, 0, 0.02]}>
+                <sphereGeometry args={[0.43, 32, 32]} />
+                <meshBasicMaterial
+                    attach="material"
+                    map={new TextureLoader().load(neptune)}
+                />
             </mesh>
 
-            <OrbitControls />
+            <OrbitControls minDistance={12} maxDistance={320}
+            />
+
         </Canvas>
     );
 };

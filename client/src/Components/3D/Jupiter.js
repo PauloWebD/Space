@@ -15,7 +15,7 @@ const Jupiter = (props) => {
         // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.04) * 300;
         meshRef.current.rotation.y += 0.001;
     });
-// size 13.9
+    // size '13.9'
     return (
         <>
             <mesh
