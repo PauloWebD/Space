@@ -2,7 +2,7 @@ import { TextureLoader, DoubleSide } from 'three';
 import React, { useRef, useState } from 'react';
 import { useFrame } from 'react-three-fiber';
 import uranusmap from "./systemSolaire/uranusmap.jpg";
-import uranusringcolor from "./systemSolaire/uranusringcolour.jpg";
+import uranusringcolor from "./systemSolaire/uranusringcolor.jpg";
 
 const Uranus = (props) => {
     const meshRef = useRef();

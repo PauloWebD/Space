@@ -1,8 +1,11 @@
-import React from 'react';
-import { Canvas } from 'react-three-fiber';
+import React, { useRef } from 'react';
+import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
-import './Scene.css'
-import { TextureLoader } from 'three';
+import { TextureLoader, DoubleSide } from 'three';
+import { NavLink } from 'react-router-dom';
+
+import './Scene.css';
+
 import mercure from "./systemSolaire/mercure.jpg";
 import sun from "./systemSolaire/sun.jpg";
 import venus from "./systemSolaire/venus.jpg";
@@ -12,88 +15,138 @@ import jupiter from "./systemSolaire/jupiter.jpg";
 import saturn from "./systemSolaire/saturn.jpg";
 import uranusmap from "./systemSolaire/uranusmap.jpg";
 import neptune from "./systemSolaire/neptune.jpg";
+import saturnringcolor from "./systemSolaire/saturnringcolor.jpg";
+import uranusringcolor from "./systemSolaire/uranusringcolor.jpg";
 
+const Planet = ({ position, size, texture, orbitRadius, orbitSpeed }) => {
+    const meshRef = useRef();
 
-const SolarSystem = () => {
+    useFrame((state) => {
+        const elapsedTime = state.clock.getElapsedTime();
+        const angle = elapsedTime * orbitSpeed;
+        meshRef.current.position.x = Math.cos(angle) * orbitRadius;
+        meshRef.current.position.z = Math.sin(angle) * orbitRadius;
+    });
 
     return (
-        <Canvas>
-            <ambientLight />
-            <pointLight position={[10, 10, 10]} />
+        <mesh ref={meshRef} position={position}>
+            <sphereGeometry args={[size, 32, 32]} />
+            <meshBasicMaterial map={new TextureLoader().load(texture)} />
+        </mesh>
+    );
+};
 
-            {/* Sun */}
-            <mesh position={[0, 0, 0]} >
-                <sphereBufferGeometry attach="geometry" args={[10.3, 32, 32]} />
-                <meshBasicMaterial map={new TextureLoader().load(sun)} />
-            </mesh>
+const SolarSystem = () => {
+    return (
+        <div className="canva">
+            <ul className='Button-explore'>
+                <li>
+                    <NavLink to={'/Home'} className='button-link'>
+                        Explorer
+                    </NavLink>
+                </li>
+            </ul>
+            <Canvas>
+                <ambientLight intensity={0.5} />
+                <spotLight position={[100, 100, 100]} angle={0.5} penumbra={1} />
 
-            {/* Mercury */}
-            <mesh position={[14, 0, 0]} >
-                <sphereBufferGeometry attach="geometry" args={[0.03, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(mercure)}
-                />
-            </mesh>
+                <group position={[0, 0, 0]}>
+                    {/* Soleil */}
+                    <mesh>
+                        <sphereGeometry args={[10.3, 32, 32]} />
+                        <meshBasicMaterial map={new TextureLoader().load(sun)} />
+                    </mesh>
+                    {/* Lumière spot */}
+                    <spotLight position={[0, 0, 0]} angle={Math.PI / 4} penumbra={0.5} />
 
-            {/* Venus */}
-            <mesh position={[17, 0, 0]}>
-                <sphereBufferGeometry attach="geometry" args={[0.09, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(venus)}
-                />
-            </mesh>
+                    {/* Mercure */}
+                    <Planet
+                        position={[14, 0, 0]}
+                        size={0.03}
+                        texture={mercure}
+                        orbitRadius={14}
+                        orbitSpeed={0.05}
+                    />
 
-            {/* Earth */}
-            <mesh position={[20, 0, 0]}>
-                <sphereBufferGeometry attach="geometry" args={[0.12, 32, 32]} />
-                <meshBasicMaterial attach="material" map={new TextureLoader().load(daymap)} />
-            </mesh>
+                    {/* Venus */}
+                    <Planet
+                        position={[17, 0, 0]}
+                        size={0.09}
+                        texture={venus}
+                        orbitRadius={17}
+                        orbitSpeed={0.03}
+                    />
 
-            {/* Mars */}
-            <mesh position={[25, 0, 0]} rotation={[0, 0, 0.15]}>
-                <sphereGeometry args={[0.06, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(mars)}
-                />
-            </mesh>
+                    {/* Earth */}
+                    <Planet
+                        position={[20, 0, 0]}
+                        size={0.12}
+                        texture={daymap}
+                        orbitRadius={20}
+                        orbitSpeed={0.02}
+                    />
 
-            {/* Jupiter */}
-            <mesh position={[52, 0, 0]} rotation={[0, 0, 0.1]}>
-                <sphereGeometry args={[1.39, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(jupiter)}
-                />
-            </mesh>
+                    {/* Mars */}
+                    <Planet
+                        position={[25, 0, 0]}
+                        size={0.06}
+                        texture={mars}
+                        orbitRadius={25}
+                        orbitSpeed={0.01}
+                    />
 
-            {/* Saturn */}
-            <mesh position={[95, 0, 0]} rotation={[0, 0, 0.07]}>
-                <sphereGeometry args={[0.93, 32, 32]} />
-                <meshBasicMaterial attach="material" map={new TextureLoader().load(saturn)} />
-            </mesh>
+                    {/* Jupiter */}
+                    <Planet
+                        position={[52, 0, 0]}
+                        size={1.39}
+                        texture={jupiter}
+                        orbitRadius={52}
+                        orbitSpeed={0.005}
+                    />
 
-            {/* Uranus */}
-            <mesh position={[190, 0, 0]} rotation={[0, 0, 0.04]}>
-                <sphereGeometry args={[0.47, 32, 32]} />
-                <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusmap)} />
-            </mesh>
+                    {/* Saturn */}
+                    <group position={[95, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                        <mesh>
+                            <sphereGeometry args={[0.93, 32, 32]} />
+                            <meshBasicMaterial map={new TextureLoader().load(saturn)} />
+                        </mesh>
+                        <mesh>
+                            <ringGeometry args={[1.5, 1.8, 32]} />
+                            <meshBasicMaterial
+                                map={new TextureLoader().load(saturnringcolor)}
+                                side={DoubleSide}
+                            />
+                        </mesh>
+                    </group>
 
-            {/* Neptune */}
-            <mesh position={[300, 0, 0]} rotation={[0, 0, 0.02]}>
-                <sphereGeometry args={[0.43, 32, 32]} />
-                <meshBasicMaterial
-                    attach="material"
-                    map={new TextureLoader().load(neptune)}
-                />
-            </mesh>
+                    {/* Uranus */}
+                    <group position={[190, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                        <mesh>
+                            <sphereGeometry args={[0.47, 32, 32]} />
+                            <meshBasicMaterial map={new TextureLoader().load(uranusmap)} />
+                        </mesh>
+                        <mesh>
+                            <ringGeometry args={[0.75, 1, 32]} />
+                            <meshBasicMaterial
+                                map={new TextureLoader().load(uranusringcolor)}
+                                side={DoubleSide}
+                            />
+                        </mesh>
+                    </group>
 
-            <OrbitControls minDistance={12} maxDistance={320}
-            />
+                    {/* Neptune */}
+                    <Planet
+                        position={[300, 0, 0]}
+                        size={0.43}
+                        texture={neptune}
+                        orbitRadius={300}
+                        orbitSpeed={0.0008}
+                    />
+                </group>
 
-        </Canvas>
+                <OrbitControls minDistance={16} maxDistance={320} />
+            </Canvas>
+        </div>
     );
 };
 
