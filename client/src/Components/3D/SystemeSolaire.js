@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
 import { TextureLoader, DoubleSide } from 'three';
+import * as THREE from "three";
 import { NavLink } from 'react-router-dom';
 
 import './Scene.css';
@@ -37,6 +38,8 @@ const Planet = ({ position, size, texture, orbitRadius, orbitSpeed }) => {
 };
 
 const SolarSystem = () => {
+    const linesGroupRef = useRef();
+
     return (
         <div className="canva">
             <ul className='Button-explore'>
@@ -59,89 +62,117 @@ const SolarSystem = () => {
                     {/* Lumière spot */}
                     <spotLight position={[0, 0, 0]} angle={Math.PI / 4} penumbra={0.5} />
 
-                    {/* Mercure */}
-                    <Planet
-                        position={[14, 0, 0]}
-                        size={0.03}
-                        texture={mercure}
-                        orbitRadius={14}
-                        orbitSpeed={0.05}
-                    />
+                    <group ref={linesGroupRef}>
+                        {/* Mercure */}
+                        <Planet
+                            position={[14, 0, 0]}
+                            size={0.03}
+                            texture={mercure}
+                            orbitRadius={14}
+                            orbitSpeed={0.05}
+                        />
 
-                    {/* Venus */}
-                    <Planet
-                        position={[17, 0, 0]}
-                        size={0.09}
-                        texture={venus}
-                        orbitRadius={17}
-                        orbitSpeed={0.03}
-                    />
+                        {/* Venus */}
+                        <Planet
+                            position={[17, 0, 0]}
+                            size={0.09}
+                            texture={venus}
+                            orbitRadius={17}
+                            orbitSpeed={0.03}
+                        />
 
-                    {/* Earth */}
-                    <Planet
-                        position={[20, 0, 0]}
-                        size={0.12}
-                        texture={daymap}
-                        orbitRadius={20}
-                        orbitSpeed={0.02}
-                    />
+                        {/* Earth */}
+                        <Planet
+                            position={[20, 0, 0]}
+                            size={0.12}
+                            texture={daymap}
+                            orbitRadius={20}
+                            orbitSpeed={0.02}
+                        />
 
-                    {/* Mars */}
-                    <Planet
-                        position={[25, 0, 0]}
-                        size={0.06}
-                        texture={mars}
-                        orbitRadius={25}
-                        orbitSpeed={0.01}
-                    />
+                        {/* Mars */}
+                        <Planet
+                            position={[25, 0, 0]}
+                            size={0.06}
+                            texture={mars}
+                            orbitRadius={25}
+                            orbitSpeed={0.01}
+                        />
 
-                    {/* Jupiter */}
-                    <Planet
-                        position={[52, 0, 0]}
-                        size={1.39}
-                        texture={jupiter}
-                        orbitRadius={52}
-                        orbitSpeed={0.005}
-                    />
+                        {/* Jupiter */}
+                        <Planet
+                            position={[52, 0, 0]}
+                            size={1.39}
+                            texture={jupiter}
+                            orbitRadius={52}
+                            orbitSpeed={0.005}
+                        />
 
-                    {/* Saturn */}
-                    <group position={[95, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-                        <mesh>
-                            <sphereGeometry args={[0.93, 32, 32]} />
-                            <meshBasicMaterial map={new TextureLoader().load(saturn)} />
-                        </mesh>
-                        <mesh>
-                            <ringGeometry args={[1.5, 1.8, 32]} />
-                            <meshBasicMaterial
-                                map={new TextureLoader().load(saturnringcolor)}
-                                side={DoubleSide}
-                            />
-                        </mesh>
+                        {/* Saturn */}
+                        <group position={[95, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                            <mesh>
+                                <sphereGeometry args={[0.93, 32, 32]} />
+                                <meshBasicMaterial map={new TextureLoader().load(saturn)} />
+                            </mesh>
+                            <mesh>
+                                <ringGeometry args={[1.5, 1.8, 32]} />
+                                <meshBasicMaterial
+                                    map={new TextureLoader().load(saturnringcolor)}
+                                    side={DoubleSide}
+                                />
+                            </mesh>
+                        </group>
+
+                        {/* Uranus */}
+                        <group position={[190, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                            <mesh>
+                                <sphereGeometry args={[0.47, 32, 32]} />
+                                <meshBasicMaterial map={new TextureLoader().load(uranusmap)} />
+                            </mesh>
+                            <mesh>
+                                <ringGeometry args={[0.75, 1, 32]} />
+                                <meshBasicMaterial
+                                    map={new TextureLoader().load(uranusringcolor)}
+                                    side={DoubleSide}
+                                />
+                            </mesh>
+                        </group>
+
+                        {/* Neptune */}
+                        <Planet
+                            position={[300, 0, 0]}
+                            size={0.43}
+                            texture={neptune}
+                            orbitRadius={300}
+                            orbitSpeed={0.0008}
+                        />
                     </group>
 
-                    {/* Uranus */}
-                    <group position={[190, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-                        <mesh>
-                            <sphereGeometry args={[0.47, 32, 32]} />
-                            <meshBasicMaterial map={new TextureLoader().load(uranusmap)} />
-                        </mesh>
-                        <mesh>
-                            <ringGeometry args={[0.75, 1, 32]} />
-                            <meshBasicMaterial
-                                map={new TextureLoader().load(uranusringcolor)}
-                                side={DoubleSide}
-                            />
-                        </mesh>
-                    </group>
+                    {/* Connexions */}
+                    {linesGroupRef.current && (
+                        <>
+                            {linesGroupRef.current.children.map((planet, index) => {
+                                const points = [
+                                    new THREE.Vector3(0, 0, 0),
+                                    new THREE.Vector3(
+                                        planet.position.x,
+                                        planet.position.y,
+                                        planet.position.z
+                                    ),
+                                ];
+                                const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                                const lineMaterial = new THREE.LineBasicMaterial({ color: "white" });
 
-                    {/* Neptune */}
-                    <Planet
-                        position={[300, 0, 0]}
-                        size={0.43}
-                        texture={neptune}
-                        orbitRadius={300}
-                        orbitSpeed={0.0008}
-                    />
+                                return (
+                                    <line
+                                        key={index}
+                                        geometry={lineGeometry}
+                                        material={lineMaterial}
+                                    />
+                                );
+                            })}
+                        </>
+                    )}
                 </group>
 
                 <OrbitControls minDistance={16} maxDistance={320} />

@@ -20,7 +20,7 @@ const Mars = (props) => {
         <>
             <mesh ref={meshRef} position={position} onClick={() => setIsActive(!isActive)}>
                 <sphereBufferGeometry attach="geometry" args={[1.2, 32, 32]} />
-
+                <meshBasicMaterial attach="material" map={new TextureLoader().load(mars)} />
             </mesh>
             {isActive && (
                 console.log(name)

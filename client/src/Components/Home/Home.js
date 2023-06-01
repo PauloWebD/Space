@@ -9,9 +9,9 @@ import Planet from '../Planetes/Planet';
 const Home = () => {
     return (
         <div>
-            {/* <Planet /> */}
+            <Planet />
             {/* <Navbar /> */}
-            <SystemSolaire />
+            {/* <SystemSolaire /> */}
             {/* <Footer /> */}
         </div>
     );

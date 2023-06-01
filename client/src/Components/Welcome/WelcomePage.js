@@ -65,11 +65,13 @@ const WelcomePage = ({ onStart }) => {
                     <button onClick={handleNextQuestion}>Suivant</button>
                 </div>
             ) : (
-                <div className="homePage">
-                    <h1>Bienvenue sur notre site sur les planètes du système solaire en 3D !</h1>
-                    <p>Explorez les merveilles de l'espace et découvrez les caractéristiques fascinantes de chaque planète.</p>
-                    <button onClick={onStart}>Commencer</button>
-                </div>
+                currentQuestion >= totalQuestions && (
+                    <div className="homePage">
+                        <h1>Bienvenue sur notre site sur les planètes du système solaire en 3D !</h1>
+                        <p>Explorez les merveilles de l'espace et découvrez les caractéristiques fascinantes de chaque planète.</p>
+                        <button onClick={onStart}>Commencer</button>
+                    </div>
+                )
             )}
 
             {score < 6 && (
