@@ -11,10 +11,11 @@
 }
 
 .PageSignup {
+    overflow-y: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    height: 100vh;
 }
 
 .signup {

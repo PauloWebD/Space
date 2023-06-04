@@ -4,7 +4,7 @@ import '../styles/Footer.css'
 const Footer = () => {
     return (
         <footer className="footer">
-            <p>Make by Master MH Paul</p>
+            <p>Make by  MH Paul</p>
         </footer>
     );
 };

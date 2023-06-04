@@ -10,18 +10,26 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [userInfo, setUserInfo] = useState(null);
 
+    const fetchUserInfo = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
+            setUserInfo(response.data.user);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         axios.post('http://localhost:3001/api/users/login', {
             username: username,
             password: password
-
         })
             .then(response => {
-                // handle successful login
                 console.log(response.data.message);
-                // fetchUserInfo(response.data.user._id); // passer l'ID de l'utilisateur à fetchUserInfo()
+                const userId = response.data.user._id;
+                fetchUserInfo(userId);
                 window.location.href = '/userPage';
             })
             .catch(error => {

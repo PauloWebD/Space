@@ -45,65 +45,65 @@ const Planet = () => {
     setSelectedPlanet(planet);
   };
 
-  const startExploring = () => {
-    setShowHome(false); // Masquer la page d'accueil lorsque l'utilisateur clique sur "Commencer"
-    // Autres actions pour la navigation vers la page principale "Planet" si nécessaire
-  };
+  // const startExploring = () => {
+  //   setShowHome(false); // Masquer la page d'accueil lorsque l'utilisateur clique sur "Commencer"
+  //   // Autres actions pour la navigation vers la page principale "Planet" si nécessaire
+  // };
   return (
     <div className="planetPage">
       <Navbar />
-      {showHome ? (
+      {/* {showHome ? (
         <WelcomePage onStart={startExploring} />
-      ) : (
-        <div className="planetAll">
-          <div className="planetDesc">
-            <h1>{planets.name}</h1>
-            <div className="planetDesc-data-desc">
-              <h2>Distance moyenne avec le Soleil:</h2>
-              <p>{planets.semimajorAxis} kilomètres</p>
-            </div>
-            <div className="planetDesc-data">
-              <h3>le rayon équatorial:</h3>
-              <p>{planets.equaRadius} kilomètres</p>
-            </div>
-            <div className="planetDesc-data">
-              <h3>Température moyenne:</h3>
-              <p>{convertKelvinToCelsius(planets.avgTemp)} °C</p>
-            </div>
-            <div className="planetDesc-data">
-              <h3>Rotation autour du soleil:</h3>
-              <p>{planets.sideralOrbit}</p>
-            </div>
-            <div className="planetDesc-data">
-              <h3>Rotation sur elle-même:</h3>
-              <p>{planets.sideralRotation}</p>
-            </div>
+      ) : ( */}
+      <div className="planetAll">
+        <div className="planetDesc">
+          <h1>{planets.name}</h1>
+          <div className="planetDesc-data-desc">
+            <h2>Distance moyenne avec le Soleil:</h2>
+            <p>{planets.semimajorAxis} kilomètres</p>
           </div>
-          <div className="planetVisu">
-            <Canvas>
-              <OrbitControls />
-              {selectedPlanet === 'terre' && <Terre />}
-              {selectedPlanet === 'mars' && <Mars />}
-              {selectedPlanet === 'venus' && <Venus />}
-              {selectedPlanet === 'jupiter' && <Jupiter />}
-              {selectedPlanet === 'saturne' && <Saturne />}
-              {selectedPlanet === 'mercure' && <Mercure />}
-              {selectedPlanet === 'neptune' && <Neptune />}
-              {selectedPlanet === 'uranus' && <Uranus />}
-            </Canvas>
+          <div className="planetDesc-data">
+            <h3>le rayon équatorial:</h3>
+            <p>{planets.equaRadius} kilomètres</p>
           </div>
-          <div className="planetButton">
-            <button onClick={() => handlePlanetChange('terre')}>Terre</button>
-            <button onClick={() => handlePlanetChange('mars')}>Mars</button>
-            <button onClick={() => handlePlanetChange('venus')}>Venus</button>
-            <button onClick={() => handlePlanetChange('jupiter')}>Jupiter</button>
-            <button onClick={() => handlePlanetChange('saturne')}>Saturne</button>
-            <button onClick={() => handlePlanetChange('mercure')}>Mercure</button>
-            <button onClick={() => handlePlanetChange('neptune')}>Neptune</button>
-            <button onClick={() => handlePlanetChange('uranus')}>Uranus</button>
+          <div className="planetDesc-data">
+            <h3>Température moyenne:</h3>
+            <p>{convertKelvinToCelsius(planets.avgTemp)} °C</p>
+          </div>
+          <div className="planetDesc-data">
+            <h3>Rotation autour du soleil:</h3>
+            <p>{planets.sideralOrbit}</p>
+          </div>
+          <div className="planetDesc-data">
+            <h3>Rotation sur elle-même:</h3>
+            <p>{planets.sideralRotation}</p>
           </div>
         </div>
-      )}
+        <div className="planetVisu">
+          <Canvas>
+            <OrbitControls />
+            {selectedPlanet === 'terre' && <Terre />}
+            {selectedPlanet === 'mars' && <Mars />}
+            {selectedPlanet === 'venus' && <Venus />}
+            {selectedPlanet === 'jupiter' && <Jupiter />}
+            {selectedPlanet === 'saturne' && <Saturne />}
+            {selectedPlanet === 'mercure' && <Mercure />}
+            {selectedPlanet === 'neptune' && <Neptune />}
+            {selectedPlanet === 'uranus' && <Uranus />}
+          </Canvas>
+        </div>
+        <div className="planetButton">
+          <button onClick={() => handlePlanetChange('terre')}>Terre</button>
+          <button onClick={() => handlePlanetChange('mars')}>Mars</button>
+          <button onClick={() => handlePlanetChange('venus')}>Venus</button>
+          <button onClick={() => handlePlanetChange('jupiter')}>Jupiter</button>
+          <button onClick={() => handlePlanetChange('saturne')}>Saturne</button>
+          <button onClick={() => handlePlanetChange('mercure')}>Mercure</button>
+          <button onClick={() => handlePlanetChange('neptune')}>Neptune</button>
+          <button onClick={() => handlePlanetChange('uranus')}>Uranus</button>
+        </div>
+      </div>
+      {/* )} */}
     </div>
   );
 };

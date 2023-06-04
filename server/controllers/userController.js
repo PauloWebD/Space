@@ -35,6 +35,34 @@ async function login(req, res) {
         await client.close();
     }
 }
+async function getUser(req, res) {
+    const { username } = req.params;
+
+    try {
+        await client.connect();
+        console.log('Connexion à la base de données réussie');
+
+        // Recherche de l'utilisateur dans la collection "users"
+        const db = client.db('MyTask');
+        const collection = db.collection('users');
+        const user = await collection.findOne({ username });
+
+        if (user) {
+            console.log('Utilisateur trouvé avec succès');
+            res.json({ user });
+        } else {
+            console.log('Utilisateur non trouvé');
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la recherche de l\'utilisateur', error);
+        res.status(500).json({ message: 'Error retrieving user' });
+    } finally {
+        // Fermeture de la connexion à la base de données
+        await client.close();
+    }
+}
+
 
 async function signup(req, res) {
     const { username, password, email, favoritePlanet } = req.body;
@@ -67,5 +95,6 @@ async function signup(req, res) {
 module.exports = {
     login,
     signup,
-    // ...
+    getUser,
+
 };

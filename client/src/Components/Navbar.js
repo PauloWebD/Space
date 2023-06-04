@@ -33,11 +33,6 @@ const Navbar = (props) => {
                 <NavLink to={'/userPage'}> {username}</NavLink>
               </li>
             )}
-            {isLoggedIn && (
-              <li>
-                <NavLink to={'/userPage'}> UserPage</NavLink>
-              </li>
-            )}
           </ul>
         </div>
       </nav>
