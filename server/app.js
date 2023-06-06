@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const { connectDB } = require('./db');
 
 // Middleware pour parser le corps des requêtes au format JSON
 app.use(bodyParser.json());
@@ -41,3 +42,6 @@ app.get('/api/messages/createMessage', (req, res) => {
 app.listen(3001, () => {
     console.log('Backend server is running on port 3001');
 });
+
+
+connectDB();

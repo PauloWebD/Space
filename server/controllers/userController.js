@@ -1,6 +1,7 @@
 // userController.js
 const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
+const { getDB } = require('../db');
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ async function signup(req, res) {
 
     try {
         await client.connect();
-        console.log('Connexion à la base de données réussie');
+        console.log('Connexion à la base de données réussie signup');
 
         // Insertion de l'utilisateur dans la collection "users"
         const db = client.db('MyTask');
@@ -45,7 +46,7 @@ async function login(req, res) {
 
     try {
         await client.connect();
-        console.log('Connexion à la base de données réussie');
+        console.log('Connexion à la base de données réussie login');
 
         // Recherche de l'utilisateur dans la collection "users"
         const db = client.db('MyTask');
@@ -54,7 +55,7 @@ async function login(req, res) {
 
         // Vérification du mot de passe
         if (user && user.password === password) {
-            console.log('Utilisateur connecté avec succès');
+            console.log('Utilisateur connecté avec succès login');
             res.json({ message: 'Login successful', user });
         } else {
             console.log('Nom d\'utilisateur ou mot de passe incorrect');
@@ -75,7 +76,7 @@ async function getUser(req, res) {
 
     try {
         await client.connect();
-        console.log('Connexion à la base de données réussie');
+        console.log('Connexion à la base de données réussie getUser');
 
         // Recherche de l'utilisateur dans la collection "users"
         const db = client.db('MyTask');
@@ -85,10 +86,10 @@ async function getUser(req, res) {
 
 
         if (user) {
-            console.log('Utilisateur trouvé avec succès');
+            console.log('Utilisateur trouvé avec succès getUser');
             res.json({ user });
         } else {
-            console.log('Utilisateur non trouvé');
+            console.log('Utilisateur non trouvé getUser');
             res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
@@ -101,11 +102,26 @@ async function getUser(req, res) {
     }
 }
 
+async function getMessages(req, res) {
+    const { userId } = req.params;
+    const db = getDB(); // Récupérez la référence à la base de données à partir du module db.js
 
+    try {
+        // Recherche des messages de l'utilisateur dans la collection "messages"
+        const collection = db.collection('messages');
+        const messages = await collection.find({ userId: new ObjectId(userId) }).toArray();
 
+        console.log('Messages récupérés avec succès getMessages');
+        res.json({ messages });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des messages', error);
+        res.status(500).json({ message: 'Error retrieving messages' });
+    }
+}
 
 module.exports = {
-    login,
     signup,
+    login,
     getUser,
+    getMessages,
 };

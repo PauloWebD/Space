@@ -13,14 +13,25 @@ import Uranus from '../3D/Uranus';
 import Venus from '../3D/Venus';
 import Neptune from '../3D/Neptune';
 
-import './UserPage.css'
+import './UserPage.css';
 import Navbar from '../Navbar';
 
 const UserPage = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [planetInfo, setPlanetInfo] = useState(null);
     const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
+
     const { userId } = useParams();
+
+    const fetchMessages = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/users/getMessages/${userId}`);
+            setMessages(response.data.messages);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -28,17 +39,16 @@ const UserPage = () => {
                 const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
                 setUserInfo(response.data.user);
                 fetchPlanetInfo(response.data.user.favoritePlanet);
+                fetchMessages(response.data.user._id);
             } catch (error) {
                 console.log(error);
             }
         };
 
         const fetchPlanetInfo = async (planetName) => {
-            console.log({ planetName });
             try {
                 const response = await axios.get(`https://api.le-systeme-solaire.net/rest.php/bodies/${planetName}`);
                 setPlanetInfo(response.data);
-
             } catch (error) {
                 console.log(error);
             }
@@ -46,6 +56,7 @@ const UserPage = () => {
 
         fetchUserInfo();
     }, [userId]);
+
     const handleChange = (event) => {
         setMessage(event.target.value);
     };
@@ -54,22 +65,17 @@ const UserPage = () => {
         event.preventDefault();
 
         try {
-            // Envoyez le message à la base de données
             await axios.post('http://localhost:3001/api/messages/createMessage', {
                 userId: userId,
                 message: message
             });
 
-            // Réinitialisez le champ de texte après avoir envoyé le message
             setMessage('');
-
-            // Effectuez toute autre action nécessaire après l'envoi du message
-            // Par exemple, mettez à jour les messages affichés sur la page ou récupérez les derniers messages de l'utilisateur
+            fetchMessages(userId);
         } catch (error) {
             console.log(error);
         }
     };
-
 
     const getPlanetComponent = () => {
         switch (userInfo?.favoritePlanet) {
@@ -93,15 +99,15 @@ const UserPage = () => {
                 return null;
         }
     };
+
     function convertKelvinToCelsius(tempKelvin) {
         const tempCelsius = tempKelvin - 273.15;
-        return Math.round(tempCelsius * 10) / 10; // Arrondi à un chiffre après la virgule
+        return Math.round(tempCelsius * 10) / 10;
     }
 
     return (
         <div>
             <Navbar />
-            {/* api keys:: hxESxLfgWfc9KHgfOvL6c0a70btoxp4vUSTqeIeu */}
             <h1>Page utilisateur</h1>
             {userInfo && (
                 <div>
@@ -115,7 +121,7 @@ const UserPage = () => {
                             <p>Température moyenne: {convertKelvinToCelsius(planetInfo.avgTemp)} °C</p>
                             <p>Rotation autour du Soleil: {planetInfo.sideralOrbit}</p>
                             <p>Rotation sur elle-même: {planetInfo.sideralRotation}</p>
-                            <p>Number of Moons: {planetInfo && planetInfo.moons ? planetInfo.moons.length : 0}</p>
+                            <p>Nombre de lunes: {planetInfo?.moons?.length || 0}</p>
                         </div>
                     )}
                 </div>
@@ -128,6 +134,14 @@ const UserPage = () => {
                     </Canvas>
                 </div>
             </div>
+            {messages.length > 0 && (
+                <div>
+                    <h2>Messages:</h2>
+                    {messages.map((message) => (
+                        <p key={message._id}>{message.message}</p>
+                    ))}
+                </div>
+            )}
             <form onSubmit={handleSubmit}>
                 <input type="text" value={message} onChange={handleChange} />
                 <button type="submit">Envoyer</button>
