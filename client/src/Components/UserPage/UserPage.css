@@ -1,0 +1,12 @@
+.PageUtilisateur {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.planetFav {
+    width: 40vw;
+    height: 50vh;
+    border: 1px solid white;
+}

@@ -1,4 +1,3 @@
-// userModel.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -8,6 +7,7 @@ const userSchema = new mongoose.Schema({
     favoritePlanet: String,
 });
 
-const User = mongoose.model('User', userSchema);
+// Vérifiez si le modèle User existe déjà avant de le créer
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = User;

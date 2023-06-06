@@ -14,9 +14,8 @@ import Uranus from '../3D/Uranus';
 import Venus from '../3D/Venus';
 import Neptune from "../3D/Neptune";
 
-import '../../../src/styles/Planet.css'
+import './Planet.css'
 import Navbar from '../Navbar';
-import WelcomePage from "../Welcome/WelcomePage";
 const Planet = () => {
   const [planets, setPlanets] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState('terre'); // la planète par défaut est la Terre
@@ -45,16 +44,9 @@ const Planet = () => {
     setSelectedPlanet(planet);
   };
 
-  // const startExploring = () => {
-  //   setShowHome(false); // Masquer la page d'accueil lorsque l'utilisateur clique sur "Commencer"
-  //   // Autres actions pour la navigation vers la page principale "Planet" si nécessaire
-  // };
   return (
     <div className="planetPage">
       <Navbar />
-      {/* {showHome ? (
-        <WelcomePage onStart={startExploring} />
-      ) : ( */}
       <div className="planetAll">
         <div className="planetDesc">
           <h1>{planets.name}</h1>
@@ -103,7 +95,6 @@ const Planet = () => {
           <button onClick={() => handlePlanetChange('uranus')}>Uranus</button>
         </div>
       </div>
-      {/* )} */}
     </div>
   );
 };

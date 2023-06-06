@@ -11,8 +11,6 @@ const Jupiter = (props) => {
     const name = 'Jupiter';
 
     useFrame((state) => {
-        // meshRef.current.position.x = Math.sin(state.clock.getElapsedTime() * 0.04) * 300;
-        // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.04) * 300;
         meshRef.current.rotation.y += 0.001;
     });
     // size '13.9'
@@ -29,9 +27,7 @@ const Jupiter = (props) => {
                     map={new TextureLoader().load(jupiter)}
                 />
             </mesh>
-            {isActive && (
-                console.log(name)
-            )}
+
         </>
     );
 };

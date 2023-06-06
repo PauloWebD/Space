@@ -23,7 +23,7 @@ const Uranus = (props) => {
                 <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusmap)} />
             </mesh>
             <mesh ref={ringRef} position={position}>
-                <group rotation={[Math.PI / 2, 0, 0]}>
+                <group rotation={[Math.PI / 2, 0.06, 0]}>
                     <mesh>
                         <ringBufferGeometry attach="geometry" args={[1.6, 2.2, 64]} />
                         <meshBasicMaterial attach="material" map={new TextureLoader().load(uranusringcolor)} side={DoubleSide} />

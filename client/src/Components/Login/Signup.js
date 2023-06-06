@@ -48,7 +48,7 @@ const Signup = () => {
     const handlePlanetChange = (event) => {
         setFavoritePlanet(event.target.value);
     };
-    const planets = ['Mercure', 'Vénus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune'];
+    const planets = ['Mercure', 'Venus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune'];
 
 
     return (

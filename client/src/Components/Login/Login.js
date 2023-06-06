@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
 import Navbar from '../Navbar';
 
 const Login = () => {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
 
     const fetchUserInfo = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
             setUserInfo(response.data.user);
+
         } catch (error) {
             console.log(error);
         }
@@ -22,15 +24,16 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:3001/api/users/login', {
-            username: username,
-            password: password
-        })
+        axios
+            .post('http://localhost:3001/api/users/login', {
+                username: username,
+                password: password
+            })
             .then(response => {
                 console.log(response.data.message);
                 const userId = response.data.user._id;
                 fetchUserInfo(userId);
-                window.location.href = '/userPage';
+                navigate(`/userPage/${userId}`); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
             })
             .catch(error => {
                 if (error.response) {
@@ -40,7 +43,6 @@ const Login = () => {
                 }
             });
     }
-
 
     return (
         <div className="all">
@@ -57,8 +59,6 @@ const Login = () => {
                             <p>Password :</p>
                             <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
                         </label>
-
-
                         <button type='submit'>Login</button>
                         {errorMessage && <p>{errorMessage}</p>}
                     </form>

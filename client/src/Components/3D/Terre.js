@@ -27,7 +27,7 @@ const Terre = (props) => {
   function getTimeBasedTexture() {
     const date = new Date();
     const hour = date.getHours();
-    if (hour >= 2 && hour <= 18) {
+    if (hour >= 8 && hour <= 18) {
       return daymap;
     } else {
       return nightmap;

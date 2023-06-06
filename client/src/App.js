@@ -5,7 +5,6 @@ import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
 import Signup from './Components/Login/Signup';
 import UserPage from './Components/UserPage/UserPage';
-// import UserPage from './Components/UserPage/UserPage';
 
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
           <Route path='/Home' element={<Planet />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/UserPage/:userId" element={<UserPage />} />
+          <Route path="/userPage/:userId" element={<UserPage />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
