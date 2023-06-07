@@ -5,7 +5,10 @@ const userSchema = new mongoose.Schema({
     password: String,
     email: String,
     favoritePlanet: String,
-    rank: 0,
+    rank: {
+        type: Number,
+        default: 0
+    },
 });
 
 // Vérifiez si le modèle User existe déjà avant de le créer

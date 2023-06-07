@@ -6,6 +6,7 @@ const WelcomePage = ({ onStart }) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
+    const [rank, setRank] = useState('');
 
     const totalQuestions = questionsData.length;
 
@@ -32,12 +33,22 @@ const WelcomePage = ({ onStart }) => {
             }
         }
         setScore(currentScore);
+
+        // Assigner un rang en fonction du score
+        if (currentScore >= 8) {
+            setRank('Expert');
+        } else if (currentScore >= 5) {
+            setRank('Avancé');
+        } else {
+            setRank('Débutant');
+        }
     };
 
     const restartQuiz = () => {
         setCurrentQuestion(0);
         setAnswers([]);
         setScore(0);
+        setRank('');
     };
 
     return (
@@ -77,6 +88,7 @@ const WelcomePage = ({ onStart }) => {
             {score < 6 && (
                 <div>
                     <h2>Score: {score}</h2>
+                    <h2>Rang: {rank}</h2>
                     <button onClick={restartQuiz}>Recommencer le quiz</button>
                 </div>
             )}

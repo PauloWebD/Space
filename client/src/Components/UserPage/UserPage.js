@@ -26,10 +26,12 @@ const UserPage = () => {
 
     const fetchMessages = async (userId) => {
         try {
+            console.log('Fetch Messages - UserID:', userId); // Ajoutez ce console.log
             const response = await axios.get(`http://localhost:3001/api/users/getMessages/${userId}`);
             setMessages(response.data.messages);
         } catch (error) {
             console.log(error);
+            console.log('UserID:', userId);
         }
     };
 
@@ -42,6 +44,7 @@ const UserPage = () => {
                 fetchMessages(response.data.user._id);
             } catch (error) {
                 console.log(error);
+                console.log('UserID:', userId);
             }
         };
 
@@ -54,8 +57,10 @@ const UserPage = () => {
             }
         };
 
+        console.log('UseEffect - UserID:', userId); // Ajoutez ce console.log
         fetchUserInfo();
     }, [userId]);
+
 
     const handleChange = (event) => {
         setMessage(event.target.value);
@@ -112,6 +117,7 @@ const UserPage = () => {
             {userInfo && (
                 <div>
                     <p>Nom d'utilisateur : {userInfo.username}</p>
+                    <p>Rang : {userInfo.rank}</p>
                     <p>Planète favorite : {userInfo.favoritePlanet}</p>
                     {planetInfo && (
                         <div>
@@ -134,14 +140,16 @@ const UserPage = () => {
                     </Canvas>
                 </div>
             </div>
-            {messages.length > 0 && (
-                <div>
-                    <h2>Messages:</h2>
-                    {messages.map((message) => (
+            <div className="message">
+                <h1>Messages :</h1> {/* Ajout du titre */}
+                {messages.length > 0 ? (
+                    messages.map((message) => (
                         <p key={message._id}>{message.message}</p>
-                    ))}
-                </div>
-            )}
+                    ))
+                ) : (
+                    <p>Aucun message</p>
+                )}
+            </div>
             <form onSubmit={handleSubmit}>
                 <input type="text" value={message} onChange={handleChange} />
                 <button type="submit">Envoyer</button>

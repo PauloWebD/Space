@@ -19,7 +19,7 @@ import Navbar from "../Navbar";
 const Planet = () => {
   const [planets, setPlanets] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState("terre");
-  const [showHome, setShowHome] = useState(true);
+  const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState({
     terre: [],
     mars: [],
@@ -30,7 +30,7 @@ const Planet = () => {
     neptune: [],
     uranus: [],
   });
-  const [currentMessage, setCurrentMessage] = useState("");
+
 
   const fetchData = (planet) => {
     fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${planet}`)

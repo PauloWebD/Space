@@ -1,4 +1,3 @@
-// userController.js
 const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
 const { getDB } = require('../db');
@@ -7,8 +6,6 @@ dotenv.config();
 
 // Connexion à la base de données MongoDB
 const client = new MongoClient(process.env.MONGO_URL);
-
-
 
 async function signup(req, res) {
     const { username, password, email, favoritePlanet } = req.body;
@@ -24,7 +21,8 @@ async function signup(req, res) {
             username,
             password,
             email,
-            favoritePlanet
+            favoritePlanet,
+            rank: 'Débutant' // Par défaut, le rang est défini à "Débutant"
         });
 
         console.log('Utilisateur créé avec succès');
@@ -38,8 +36,6 @@ async function signup(req, res) {
         console.log('Fermeture de la connexion à la base de données signup');
     }
 }
-
-
 
 async function login(req, res) {
     const { username, password } = req.body;
@@ -84,7 +80,6 @@ async function getUser(req, res) {
         console.log('ID:', id);
         const user = await collection.findOne({ _id: new ObjectId(id) });
 
-
         if (user) {
             console.log('Utilisateur trouvé avec succès getUser');
             res.json({ user });
@@ -104,18 +99,23 @@ async function getUser(req, res) {
 
 async function getMessages(req, res) {
     const { userId } = req.params;
-    const db = getDB(); // Récupérez la référence à la base de données à partir du module db.js
 
     try {
-        // Recherche des messages de l'utilisateur dans la collection "messages"
+        await client.connect(); // Connectez-vous à la base de données
+        console.log('Connexion à la base de données réussie getMessages');
+
+        const db = client.db('MyTask');
         const collection = db.collection('messages');
         const messages = await collection.find({ userId: new ObjectId(userId) }).toArray();
-
-        console.log('Messages récupérés avec succès getMessages');
+        console.log('UserID:', userId);
+        console.log('Messages récupérés avec succès:', messages);
         res.json({ messages });
     } catch (error) {
         console.error('Erreur lors de la récupération des messages', error);
         res.status(500).json({ message: 'Error retrieving messages' });
+    } finally {
+        // Ne fermez pas la connexion à la base de données ici
+        console.log('Fermeture de la connexion à la base de données getMessages');
     }
 }
 
