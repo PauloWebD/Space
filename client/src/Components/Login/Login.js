@@ -9,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [userInfo, setUserInfo] = useState(null);
+    const [token, setToken] = useState('');
     const navigate = useNavigate();
 
     const fetchUserInfo = async (userId) => {
@@ -33,6 +34,8 @@ const Login = () => {
                 console.log(response.data.message);
                 const userId = response.data.user._id;
                 fetchUserInfo(userId);
+                sessionStorage.setItem('token', JSON.stringify(response.data.token));
+                setToken(response.data.token);
                 navigate(`/userPage/${userId}`); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
             })
             .catch(error => {

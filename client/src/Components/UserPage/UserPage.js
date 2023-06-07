@@ -27,15 +27,13 @@ const UserPage = () => {
 
     const fetchMessages = async (userId) => {
         try {
-            console.log('Fetch Messages - UserID:', userId);
+
             const response = await axios.get(`http://localhost:3001/api/users/getMessages/${userId}`);
             setMessages(response.data.messages);
         } catch (error) {
             console.log(error);
-            console.log('UserID:', userId);
         }
     };
-    console.log(userId);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -46,7 +44,6 @@ const UserPage = () => {
                 fetchMessages(response.data.user._id);
             } catch (error) {
                 console.log(error);
-                console.log('UserID:', userId);
             }
         };
 
@@ -59,7 +56,6 @@ const UserPage = () => {
             }
         };
 
-        console.log('UseEffect - UserID:', userId);
         fetchUserInfo();
     }, [userId]);
 

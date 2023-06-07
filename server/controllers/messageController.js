@@ -8,7 +8,7 @@ dotenv.config();
 const client = new MongoClient(process.env.MONGO_URL);
 
 async function createMessage(req, res) {
-    const { userId, message } = req.body;
+    const { userId, message, planet } = req.body;
 
     try {
         await client.connect();
@@ -26,6 +26,7 @@ async function createMessage(req, res) {
         const newMessage = {
             userId,
             message,
+            planet
         };
 
         // Insertion du message dans la collection "messages"

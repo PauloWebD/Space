@@ -1,5 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 const { getDB } = require('../db');
 
 dotenv.config();
@@ -37,6 +38,12 @@ async function signup(req, res) {
     }
 }
 
+
+function generateAuthToken() {
+    const token = jwt.sign({ _id: this._id }, 'toto', { expiresIn: '24h' });
+    return token;
+};
+
 async function login(req, res) {
     const { username, password } = req.body;
 
@@ -51,8 +58,14 @@ async function login(req, res) {
 
         // Vérification du mot de passe
         if (user && user.password === password) {
+
             console.log('Utilisateur connecté avec succès login');
-            res.json({ message: 'Login successful', user });
+            console.log('test1 ==>', this._id);
+            const token = generateAuthToken();
+            console.log('test2 ==>', token);
+            res.json({ message: 'Login successful', user, token: token });
+            // Les informations d'identification sont valides, générer un token JWT
+
         } else {
             console.log('Nom d\'utilisateur ou mot de passe incorrect');
             res.status(401).json({ message: 'Invalid username or password' });
@@ -118,6 +131,8 @@ async function getMessages(req, res) {
         console.log('Fermeture de la connexion à la base de données getMessages');
     }
 }
+
+
 const updateRank = async (req, res) => {
     try {
         const userId = req.params.userId;
