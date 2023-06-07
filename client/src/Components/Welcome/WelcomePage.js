@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import questionsData from './questions.json';
 import './WelcomePage.css';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-const WelcomePage = ({ onStart }) => {
+const WelcomePage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
     const [rank, setRank] = useState('');
-
+    const { userId } = useParams();
     const totalQuestions = questionsData.length;
 
     const handleAnswerSelect = (selectedOption) => {
@@ -34,13 +36,35 @@ const WelcomePage = ({ onStart }) => {
         }
         setScore(currentScore);
 
-        // Assigner un rang en fonction du score
+        // Assign a rank based on the score
         if (currentScore >= 8) {
             setRank('Expert');
         } else if (currentScore >= 5) {
             setRank('Avancé');
         } else {
             setRank('Débutant');
+        }
+
+        updateRankInDatabase(currentScore);
+    };
+    console.log(userId);
+    const updateRankInDatabase = async (currentScore) => {
+        try {
+            await axios.post(`http://localhost:3001/api/users/updateRank/${userId}`, {
+                rank: getRank(currentScore)
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    console.log(userId);
+    const getRank = (currentScore) => {
+        if (currentScore >= 8) {
+            return 'Expert';
+        } else if (currentScore >= 5) {
+            return 'Avancé';
+        } else {
+            return 'Débutant';
         }
     };
 
@@ -53,45 +77,37 @@ const WelcomePage = ({ onStart }) => {
 
     return (
         <div className="quizPage">
-            {score < 6 ? (
-                <div>
-                    <h1>Quiz sur l'univers et le système solaire</h1>
-                    <p>Question {currentQuestion + 1} sur {totalQuestions}</p>
-                    <p>{questionsData[currentQuestion].question}</p>
-                    <ul>
-                        {questionsData[currentQuestion].options.map((option, optionIndex) => (
-                            <li key={optionIndex}>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name={`question-${currentQuestion}`}
-                                        value={option}
-                                        onChange={() => handleAnswerSelect(option)}
-                                    />
-                                    {option}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                    <button onClick={handleNextQuestion}>Suivant</button>
-                </div>
-            ) : (
-                currentQuestion >= totalQuestions && (
-                    <div className="homePage">
-                        <h1>Bienvenue sur notre site sur les planètes du système solaire en 3D !</h1>
-                        <p>Explorez les merveilles de l'espace et découvrez les caractéristiques fascinantes de chaque planète.</p>
-                        <button onClick={onStart}>Commencer</button>
+            <div>
+                <h1>Quiz sur l'univers et le système solaire</h1>
+                {currentQuestion < totalQuestions ? (
+                    <div>
+                        <p>Question {currentQuestion + 1} sur {totalQuestions}</p>
+                        <p>{questionsData[currentQuestion].question}</p>
+                        <ul>
+                            {questionsData[currentQuestion].options.map((option, optionIndex) => (
+                                <li key={optionIndex}>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name={`question-${currentQuestion}`}
+                                            value={option}
+                                            onChange={() => handleAnswerSelect(option)}
+                                        />
+                                        {option}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                        <button onClick={handleNextQuestion}>Suivant</button>
                     </div>
-                )
-            )}
-
-            {score < 6 && (
-                <div>
-                    <h2>Score: {score}</h2>
-                    <h2>Rang: {rank}</h2>
-                    <button onClick={restartQuiz}>Recommencer le quiz</button>
-                </div>
-            )}
+                ) : (
+                    <div>
+                        <h2>Score: {score}</h2>
+                        <h2>Rang: {rank}</h2>
+                        <button onClick={restartQuiz}>Recommencer le quiz</button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

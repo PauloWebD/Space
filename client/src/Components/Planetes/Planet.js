@@ -166,7 +166,7 @@ const Planet = () => {
             onChange={(event) => setCurrentMessage(event.target.value)}
             placeholder="Votre message..."
           />
-          <button type="submit">Envoyer</button>
+          <button data-planet={selectedPlanet} type="submit">Envoyer</button>
         </form>
       </div>
     </div>

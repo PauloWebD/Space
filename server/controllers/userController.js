@@ -92,7 +92,7 @@ async function getUser(req, res) {
         res.status(500).json({ message: 'Error retrieving user' });
     } finally {
         // Fermeture de la connexion à la base de données
-        await client.close();
+        // await client.close();
         console.log('Fermeture de la connexion à la base de données getUser');
     }
 }
@@ -106,7 +106,7 @@ async function getMessages(req, res) {
 
         const db = client.db('MyTask');
         const collection = db.collection('messages');
-        const messages = await collection.find({ userId: new ObjectId(userId) }).toArray();
+        const messages = await collection.find({ userId: userId }).toArray();
         console.log('UserID:', userId);
         console.log('Messages récupérés avec succès:', messages);
         res.json({ messages });
@@ -118,10 +118,43 @@ async function getMessages(req, res) {
         console.log('Fermeture de la connexion à la base de données getMessages');
     }
 }
+const updateRank = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const newRank = req.body.rank;
+
+        // Vérifier le format de userId
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid userId' });
+        }
+
+        // Connexion à la base de données
+        await client.connect();
+        console.log('Connexion à la base de données réussie updateRank');
+
+        // Mise à jour du rang de l'utilisateur dans la collection "users"
+        const db = client.db('MyTask');
+        const collection = db.collection('users');
+        await collection.updateOne({ _id: new ObjectId(userId) }, { $set: { rank: newRank } });
+
+
+        console.log('Mise à jour du rang réussie');
+        res.json({ message: 'Rank updated successfully' });
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du rang', error);
+        res.status(500).json({ message: 'Error updating rank' });
+    } finally {
+        // Fermeture de la connexion à la base de données
+        await client.close();
+        console.log('Fermeture de la connexion à la base de données updateRank');
+    }
+};
+
 
 module.exports = {
     signup,
     login,
     getUser,
     getMessages,
+    updateRank
 };

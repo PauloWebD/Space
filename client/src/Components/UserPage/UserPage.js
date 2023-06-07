@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { OrbitControls } from "@react-three/drei";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Canvas } from 'react-three-fiber';
 // planets
 import Jupiter from '../3D/Jupiter';
@@ -23,10 +23,11 @@ const UserPage = () => {
     const [messages, setMessages] = useState([]);
 
     const { userId } = useParams();
+    const navigate = useNavigate(); // Add navigate hook
 
     const fetchMessages = async (userId) => {
         try {
-            console.log('Fetch Messages - UserID:', userId); // Ajoutez ce console.log
+            console.log('Fetch Messages - UserID:', userId);
             const response = await axios.get(`http://localhost:3001/api/users/getMessages/${userId}`);
             setMessages(response.data.messages);
         } catch (error) {
@@ -34,6 +35,7 @@ const UserPage = () => {
             console.log('UserID:', userId);
         }
     };
+    console.log(userId);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -57,7 +59,7 @@ const UserPage = () => {
             }
         };
 
-        console.log('UseEffect - UserID:', userId); // Ajoutez ce console.log
+        console.log('UseEffect - UserID:', userId);
         fetchUserInfo();
     }, [userId]);
 
@@ -110,15 +112,22 @@ const UserPage = () => {
         return Math.round(tempCelsius * 10) / 10;
     }
 
+    // Add navigation to welcome page with user ID
+    const navigateToWelcome = () => {
+        navigate(`/WelcomePage/${userId}`);
+    };
+
     return (
         <div>
             <Navbar />
+
             <h1>Page utilisateur</h1>
             {userInfo && (
                 <div>
                     <p>Nom d'utilisateur : {userInfo.username}</p>
                     <p>Rang : {userInfo.rank}</p>
                     <p>Planète favorite : {userInfo.favoritePlanet}</p>
+                    <button onClick={navigateToWelcome}>Augmente ton rank ICI  !! </button> {/* Button to navigate to welcome page */}
                     {planetInfo && (
                         <div>
                             <h1>Informations sur la planète favorite :</h1>
@@ -141,7 +150,7 @@ const UserPage = () => {
                 </div>
             </div>
             <div className="message">
-                <h1>Messages :</h1> {/* Ajout du titre */}
+                <h1>Messages :</h1>
                 {messages.length > 0 ? (
                     messages.map((message) => (
                         <p key={message._id}>{message.message}</p>
