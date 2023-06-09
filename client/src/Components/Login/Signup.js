@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import Navbar from '../Navbar';
+import { NavLink } from 'react-router-dom';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -54,6 +55,8 @@ const Signup = () => {
     return (
         <div className="all">
             <Navbar />
+
+            <NavLink to={'/Login'}> Déjà inscrit clic ICI</NavLink>
             <div className="PageSignup">
                 <div className="signup">
                     <h1>Signup Page</h1>

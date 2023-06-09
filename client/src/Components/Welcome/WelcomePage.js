@@ -3,6 +3,7 @@ import questionsData from './questions.json';
 import './WelcomePage.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Navbar from '../Navbar';
 
 const WelcomePage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -77,6 +78,7 @@ const WelcomePage = () => {
 
     return (
         <div className="quizPage">
+            <Navbar />
             <div>
                 <h1>Quiz sur l'univers et le système solaire</h1>
                 {currentQuestion < totalQuestions ? (

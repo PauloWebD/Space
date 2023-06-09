@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { OrbitControls } from "@react-three/drei";
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { Canvas } from 'react-three-fiber';
 // planets
 import Jupiter from '../3D/Jupiter';
@@ -16,7 +16,7 @@ import Neptune from '../3D/Neptune';
 import './UserPage.css';
 import Navbar from '../Navbar';
 
-const UserPage = () => {
+const UserPage = (props) => {
     const [userInfo, setUserInfo] = useState(null);
     const [planetInfo, setPlanetInfo] = useState(null);
     const [message, setMessage] = useState('');
@@ -25,23 +25,16 @@ const UserPage = () => {
     const { userId } = useParams();
     const navigate = useNavigate(); // Add navigate hook
 
-    const fetchMessages = async (userId) => {
-        try {
-
-            const response = await axios.get(`http://localhost:3001/api/users/getMessages/${userId}`);
-            setMessages(response.data.messages);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
-                setUserInfo(response.data.user);
-                fetchPlanetInfo(response.data.user.favoritePlanet);
-                fetchMessages(response.data.user._id);
+                if (props.userId) {
+                    console.log('frfrfr ==>', props.userId);
+                    const response = await axios.get(`http://localhost:3001/api/users/getUser/${props.userId}`);
+                    console.log('polo ==>', response.data.user);
+                    setUserInfo(response.data.user);
+                    fetchPlanetInfo(response.data.user.favoritePlanet);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -57,7 +50,7 @@ const UserPage = () => {
         };
 
         fetchUserInfo();
-    }, [userId]);
+    }, [props.userId]);
 
 
     const handleChange = (event) => {
@@ -74,7 +67,6 @@ const UserPage = () => {
             });
 
             setMessage('');
-            fetchMessages(userId);
         } catch (error) {
             console.log(error);
         }
@@ -111,7 +103,9 @@ const UserPage = () => {
     // Add navigation to welcome page with user ID
     const navigateToWelcome = () => {
         navigate(`/WelcomePage/${userId}`);
+
     };
+
 
     return (
         <div>
@@ -123,7 +117,11 @@ const UserPage = () => {
                     <p>Nom d'utilisateur : {userInfo.username}</p>
                     <p>Rang : {userInfo.rank}</p>
                     <p>Planète favorite : {userInfo.favoritePlanet}</p>
-                    <button onClick={navigateToWelcome}>Augmente ton rank ICI  !! </button> {/* Button to navigate to welcome page */}
+                    <button onClick={navigateToWelcome}>Augmente ton rank ICI  !! </button>
+                    <br />
+                    <button>
+                        <NavLink to={'/'}> Home</NavLink>
+                    </button>
                     {planetInfo && (
                         <div>
                             <h1>Informations sur la planète favorite :</h1>
@@ -145,7 +143,7 @@ const UserPage = () => {
                     </Canvas>
                 </div>
             </div>
-            <div className="message">
+            {/* <div className="message">
                 <h1>Messages :</h1>
                 {messages.length > 0 ? (
                     messages.map((message) => (
@@ -158,7 +156,7 @@ const UserPage = () => {
             <form onSubmit={handleSubmit}>
                 <input type="text" value={message} onChange={handleChange} />
                 <button type="submit">Envoyer</button>
-            </form>
+            </form> */}
         </div>
     );
 };

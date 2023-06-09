@@ -44,6 +44,27 @@ async function createMessage(req, res) {
     }
 }
 
+async function getMessages(req, res) {
+    const { planet } = req.params;
+    console.log("plan==>", req.params);
+    try {
+        await client.connect(); // Connectez-vous à la base de données
+        console.log('Connexion à la base de données réussie getMessages');
+
+        const db = client.db('MyTask');
+        const collection = db.collection('messages');
+        const messages = await collection.find({ planet: planet }).toArray();
+        res.json({ messages });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des messages', error);
+        res.status(500).json({ message: 'Error retrieving messages' });
+    } finally {
+        // Ne fermez pas la connexion à la base de données ici
+        console.log('Fermeture de la connexion à la base de données getMessages');
+    }
+}
+
 module.exports = {
     createMessage,
+    getMessages
 };

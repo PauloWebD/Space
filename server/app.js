@@ -47,7 +47,6 @@ app.get('/api/messages', async (req, res) => {
         const db = client.db('MyTask');
         const collection = db.collection('messages');
         const messages = await collection.find().toArray();
-        console.log('Messages récupérés avec succès');
         res.json({ messages });
     } catch (error) {
         console.error('Erreur lors de la récupération des messages', error);

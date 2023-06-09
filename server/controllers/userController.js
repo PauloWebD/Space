@@ -1,7 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
-const { getDB } = require('../db');
 
 dotenv.config();
 
@@ -23,6 +21,7 @@ async function signup(req, res) {
             password,
             email,
             favoritePlanet,
+            token: '',
             rank: 'Débutant' // Par défaut, le rang est défini à "Débutant"
         });
 
@@ -38,11 +37,21 @@ async function signup(req, res) {
     }
 }
 
-
-function generateAuthToken() {
-    const token = jwt.sign({ _id: this._id }, 'toto', { expiresIn: '24h' });
-    return token;
-};
+async function verifyToken(req, res) {
+    const { token } = req.params;
+    console.log('token ==>', token);
+    try {
+        await client.connect();
+        const db = client.db('MyTask');
+        const collection = db.collection('users');
+        const user = await collection.findOne({ _id: new ObjectId(token) });
+        console.log('brrrr', user._id);
+        res.send({ userId: user._id });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error logging in' });
+    }
+}
 
 async function login(req, res) {
     const { username, password } = req.body;
@@ -60,10 +69,7 @@ async function login(req, res) {
         if (user && user.password === password) {
 
             console.log('Utilisateur connecté avec succès login');
-            console.log('test1 ==>', this._id);
-            const token = generateAuthToken();
-            console.log('test2 ==>', token);
-            res.json({ message: 'Login successful', user, token: token });
+            res.json({ message: 'Login successful', user });
             // Les informations d'identification sont valides, générer un token JWT
 
         } else {
@@ -110,29 +116,6 @@ async function getUser(req, res) {
     }
 }
 
-async function getMessages(req, res) {
-    const { userId } = req.params;
-
-    try {
-        await client.connect(); // Connectez-vous à la base de données
-        console.log('Connexion à la base de données réussie getMessages');
-
-        const db = client.db('MyTask');
-        const collection = db.collection('messages');
-        const messages = await collection.find({ userId: userId }).toArray();
-        console.log('UserID:', userId);
-        console.log('Messages récupérés avec succès:', messages);
-        res.json({ messages });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des messages', error);
-        res.status(500).json({ message: 'Error retrieving messages' });
-    } finally {
-        // Ne fermez pas la connexion à la base de données ici
-        console.log('Fermeture de la connexion à la base de données getMessages');
-    }
-}
-
-
 const updateRank = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -170,6 +153,6 @@ module.exports = {
     signup,
     login,
     getUser,
-    getMessages,
-    updateRank
+    updateRank,
+    verifyToken
 };

@@ -4,12 +4,11 @@ import './Login.css';
 import axios from 'axios';
 import Navbar from '../Navbar';
 
-const Login = () => {
+const Login = ({ onPropChange }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [userInfo, setUserInfo] = useState(null);
-    const [token, setToken] = useState('');
     const navigate = useNavigate();
 
     const fetchUserInfo = async (userId) => {
@@ -33,10 +32,10 @@ const Login = () => {
             .then(response => {
                 console.log(response.data.message);
                 const userId = response.data.user._id;
+                onPropChange(userId);
                 fetchUserInfo(userId);
-                sessionStorage.setItem('token', JSON.stringify(response.data.token));
-                setToken(response.data.token);
-                navigate(`/userPage/${userId}`); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
+                sessionStorage.setItem('token', userId);
+                navigate('/userPage'); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
             })
             .catch(error => {
                 if (error.response) {

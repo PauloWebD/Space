@@ -16,27 +16,17 @@ import Neptune from "../3D/Neptune";
 import "./Planet.css";
 import Navbar from "../Navbar";
 
-const Planet = () => {
-  const [planets, setPlanets] = useState([]);
-  const [selectedPlanet, setSelectedPlanet] = useState("terre");
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [messages, setMessages] = useState({
-    terre: [],
-    mars: [],
-    venus: [],
-    jupiter: [],
-    saturne: [],
-    mercure: [],
-    neptune: [],
-    uranus: [],
-  });
+const Planet = (props) => {
+  const [planet, setPlanet] = useState([]);
+  const [selectedPlanet, setSelectedPlanet] = useState('terre');
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [messages, setMessages] = useState([]);
 
-
-  const fetchData = (planet) => {
-    fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${planet}`)
+  const fetchData = (selectedPlanet) => {
+    fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${selectedPlanet}`)
       .then((response) => response.json())
       .then((data) => {
-        setPlanets(data);
+        setPlanet(data);
         console.log(data);
       });
   };
@@ -46,29 +36,22 @@ const Planet = () => {
     return Math.round(tempCelsius * 10) / 10; // Arrondi à un chiffre après la virgule
   }
 
-  const handlePlanetChange = (planet) => {
-    setSelectedPlanet(planet);
+  const handlePlanetChange = (currentPlanet) => {
+    setSelectedPlanet(currentPlanet);
   };
 
   const sendMessage = async (event) => {
     event.preventDefault();
 
-    // Récupérer le nom de la planète sélectionnée
-    const planet = selectedPlanet;
-
     // Envoyer le message au serveur
     try {
-      const response = await axios.post("http://localhost:3001/api/messages/createMessage", {
-        planet,
+      await axios.post("http://localhost:3001/api/messages/createMessage", {
+        userId: props.userId,
+        planet: selectedPlanet,
         message: currentMessage,
       });
 
-
-      // Mettre à jour les messages pour la planète sélectionnée avec la nouvelle liste de messages
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [planet]: response.data.messages,
-      }));
+      fetchMessagesByPlanet(selectedPlanet);
 
       // Effacer le champ de saisie du message
       setCurrentMessage("");
@@ -77,24 +60,22 @@ const Planet = () => {
     }
   };
 
+  const fetchMessagesByPlanet = async (selectedPlanet) => {
+    try {
+
+      const response = await axios.get(`http://localhost:3001/api/messages/getMessages/${selectedPlanet}`);
+      setMessages(response.data.messages);
+      console.log('===>', messages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchData(selectedPlanet);
-  }, [selectedPlanet]);
+    fetchMessagesByPlanet(selectedPlanet);
 
-  useEffect(() => {
-    const fetchPlanetMessages = async () => {
-      try {
-        const response = await axios.get(`/api/messages/createMessage/${selectedPlanet}`);
-        setMessages((prevMessages) => ({
-          ...prevMessages,
-          [selectedPlanet]: response.data.messages,
-        }));
-      } catch (error) {
-        console.error("Erreur lors de la récupération des messages", error);
-      }
-    };
 
-    fetchPlanetMessages();
   }, [selectedPlanet]);
 
   return (
@@ -102,26 +83,26 @@ const Planet = () => {
       <Navbar />
       <div className="planetAll">
         <div className="planetDesc">
-          <h1>{planets.name}</h1>
+          <h1>{planet.name}</h1>
           <div className="planetDesc-data-desc">
             <h2>Distance moyenne avec le Soleil:</h2>
-            <p>{planets.semimajorAxis} kilomètres</p>
+            <p>{planet.semimajorAxis} kilomètres</p>
           </div>
           <div className="planetDesc-data">
             <h3>le rayon équatorial:</h3>
-            <p>{planets.equaRadius} kilomètres</p>
+            <p>{planet.equaRadius} kilomètres</p>
           </div>
           <div className="planetDesc-data">
             <h3>Température moyenne:</h3>
-            <p>{convertKelvinToCelsius(planets.avgTemp)} °C</p>
+            <p>{convertKelvinToCelsius(planet.avgTemp)} °C</p>
           </div>
           <div className="planetDesc-data">
             <h3>Rotation autour du soleil:</h3>
-            <p>{planets.sideralOrbit}</p>
+            <p>{planet.sideralOrbit}</p>
           </div>
           <div className="planetDesc-data">
             <h3>Rotation sur elle-même:</h3>
-            <p>{planets.sideralRotation}</p>
+            <p>{planet.sideralRotation}</p>
           </div>
         </div>
         <div className="planetVisu">
@@ -152,22 +133,23 @@ const Planet = () => {
           <button onClick={() => handlePlanetChange("uranus")}>Uranus</button>
         </div>
         <div className="planetMessages">
-          {messages[selectedPlanet].map((message, index) => (
+          <h1>Message pour {selectedPlanet}</h1>
+          <form onSubmit={sendMessage}>
+            <input
+              type="text"
+              value={currentMessage}
+              onChange={(event) => setCurrentMessage(event.target.value)}
+              placeholder="Votre message..."
+            />
+            <button data-planet={selectedPlanet} type="submit">Envoyer</button>
+          </form>
+
+          {messages.map((message, index) => (
             <div key={index} className="message">
-              {message}
+              {message.message}
             </div>
           ))}
         </div>
-        <h1>Message pour {selectedPlanet}</h1>
-        <form onSubmit={sendMessage}>
-          <input
-            type="text"
-            value={currentMessage}
-            onChange={(event) => setCurrentMessage(event.target.value)}
-            placeholder="Votre message..."
-          />
-          <button data-planet={selectedPlanet} type="submit">Envoyer</button>
-        </form>
       </div>
     </div>
   );

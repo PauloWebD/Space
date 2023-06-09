@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import jwt_decode from 'jwt-decode';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoute = () => {
@@ -13,10 +12,7 @@ const PrivateRoute = () => {
         if (storedToken) {
             // Décoder le token JWT
             try {
-                const decodedToken = jwt_decode(storedToken);
-                console.log('test3 ==>', decodedToken);
-                // Vérifier si le token est valide (vous pouvez ajouter d'autres vérifications ici)
-                if (decodedToken) {
+                if (storedToken) {
                     setIsAuthenticated(true);
                 }
             } catch (error) {
@@ -31,7 +27,7 @@ const PrivateRoute = () => {
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/Signup" />;
 }
 
 export default PrivateRoute;
