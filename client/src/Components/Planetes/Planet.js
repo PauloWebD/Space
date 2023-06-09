@@ -12,9 +12,7 @@ import Terre from "../3D/Terre";
 import Uranus from "../3D/Uranus";
 import Venus from "../3D/Venus";
 import Neptune from "../3D/Neptune";
-
 import "./Planet.css";
-import Navbar from "../Navbar";
 
 const Planet = (props) => {
   const [planet, setPlanet] = useState([]);
@@ -27,7 +25,6 @@ const Planet = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setPlanet(data);
-        console.log(data);
       });
   };
 
@@ -65,7 +62,6 @@ const Planet = (props) => {
 
       const response = await axios.get(`http://localhost:3001/api/messages/getMessages/${selectedPlanet}`);
       setMessages(response.data.messages);
-      console.log('===>', messages);
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +76,6 @@ const Planet = (props) => {
 
   return (
     <div className="planetPage">
-      <Navbar />
       <div className="planetAll">
         <div className="planetDesc">
           <h1>{planet.name}</h1>
@@ -107,7 +102,7 @@ const Planet = (props) => {
         </div>
         <div className="planetVisu">
           <Canvas>
-            <OrbitControls />
+            <OrbitControls minDistance={4} maxDistance={20} />
             {selectedPlanet === "terre" && <Terre />}
             {selectedPlanet === "mars" && <Mars />}
             {selectedPlanet === "venus" && <Venus />}

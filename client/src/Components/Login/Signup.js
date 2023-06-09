@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Login.css';
-import Navbar from '../Navbar';
 import { NavLink } from 'react-router-dom';
 
 const Signup = () => {
@@ -35,7 +34,7 @@ const Signup = () => {
 
             if (response.ok) {
                 // Signup successful, redirect to signup page
-                window.location.href = '/signup';
+                window.location.href = '/login';
             } else {
                 // Signup failed, display error message
                 const data = await response.json();
@@ -54,8 +53,6 @@ const Signup = () => {
 
     return (
         <div className="all">
-            <Navbar />
-
             <NavLink to={'/Login'}> Déjà inscrit clic ICI</NavLink>
             <div className="PageSignup">
                 <div className="signup">

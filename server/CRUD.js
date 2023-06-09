@@ -20,7 +20,6 @@ async function main() {
             },
 
         ]);
-        console.log('Document insérés => ', inserData);
     } catch (e) { throw e; }
 
 

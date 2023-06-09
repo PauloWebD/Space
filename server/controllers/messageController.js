@@ -46,7 +46,6 @@ async function createMessage(req, res) {
 
 async function getMessages(req, res) {
     const { planet } = req.params;
-    console.log("plan==>", req.params);
     try {
         await client.connect(); // Connectez-vous à la base de données
         console.log('Connexion à la base de données réussie getMessages');

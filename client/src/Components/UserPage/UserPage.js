@@ -12,9 +12,7 @@ import Terre from '../3D/Terre';
 import Uranus from '../3D/Uranus';
 import Venus from '../3D/Venus';
 import Neptune from '../3D/Neptune';
-
 import './UserPage.css';
-import Navbar from '../Navbar';
 
 const UserPage = (props) => {
     const [userInfo, setUserInfo] = useState(null);
@@ -29,9 +27,7 @@ const UserPage = (props) => {
         const fetchUserInfo = async () => {
             try {
                 if (props.userId) {
-                    console.log('frfrfr ==>', props.userId);
                     const response = await axios.get(`http://localhost:3001/api/users/getUser/${props.userId}`);
-                    console.log('polo ==>', response.data.user);
                     setUserInfo(response.data.user);
                     fetchPlanetInfo(response.data.user.favoritePlanet);
                 }
@@ -102,15 +98,13 @@ const UserPage = (props) => {
 
     // Add navigation to welcome page with user ID
     const navigateToWelcome = () => {
-        navigate(`/WelcomePage/${userId}`);
+        navigate(`/WelcomePage/${props.userId}`);
 
     };
 
 
     return (
         <div>
-            <Navbar />
-
             <h1>Page utilisateur</h1>
             {userInfo && (
                 <div>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
-import Navbar from '../Navbar';
 
 const Login = ({ onPropChange }) => {
     const [username, setUsername] = useState('');
@@ -30,7 +29,6 @@ const Login = ({ onPropChange }) => {
                 password: password
             })
             .then(response => {
-                console.log(response.data.message);
                 const userId = response.data.user._id;
                 onPropChange(userId);
                 fetchUserInfo(userId);
@@ -48,7 +46,6 @@ const Login = ({ onPropChange }) => {
 
     return (
         <div className="all">
-            <Navbar username={userInfo && userInfo.username} />
             <div className="PageSignup">
                 <div className='login'>
                     <h1>Login Page</h1>

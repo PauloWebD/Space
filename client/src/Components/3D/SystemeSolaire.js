@@ -5,7 +5,7 @@ import { TextureLoader, DoubleSide } from 'three';
 import * as THREE from "three";
 import { NavLink } from 'react-router-dom';
 
-import './Scene.css';
+import './SystemeSolaire.css';
 
 import mercure from "./systemSolaire/mercure.jpg";
 import sun from "./systemSolaire/sun.jpg";
@@ -40,13 +40,6 @@ const Planet = ({ position, size, texture, orbitRadius, orbitSpeed }) => {
 const SolarSystem = () => {
     return (
         <div className="canva">
-            <ul className='Button-explore'>
-                <li>
-                    <NavLink to={'/Home'} className='button-link'>
-                        Explorer
-                    </NavLink>
-                </li>
-            </ul>
             <Canvas>
                 <ambientLight intensity={0.5} />
                 <spotLight position={[100, 100, 100]} angle={0.5} penumbra={1} />
@@ -145,7 +138,7 @@ const SolarSystem = () => {
                         orbitSpeed={0.0008}
                     />
                 </group>
-                <OrbitControls minDistance={16} maxDistance={320} />
+                <OrbitControls minDistance={30} maxDistance={320} />
             </Canvas>
         </div>
     );

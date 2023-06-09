@@ -8,7 +8,6 @@ const PrivateRoute = () => {
     useEffect(() => {
         // Vérifier si un token est présent dans le sessionStorage
         const storedToken = sessionStorage.getItem('token');
-        console.log('===>', storedToken);
         if (storedToken) {
             // Décoder le token JWT
             try {

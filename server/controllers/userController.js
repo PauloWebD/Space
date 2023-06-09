@@ -21,7 +21,6 @@ async function signup(req, res) {
             password,
             email,
             favoritePlanet,
-            token: '',
             rank: 'Débutant' // Par défaut, le rang est défini à "Débutant"
         });
 
@@ -39,13 +38,11 @@ async function signup(req, res) {
 
 async function verifyToken(req, res) {
     const { token } = req.params;
-    console.log('token ==>', token);
     try {
         await client.connect();
         const db = client.db('MyTask');
         const collection = db.collection('users');
         const user = await collection.findOne({ _id: new ObjectId(token) });
-        console.log('brrrr', user._id);
         res.send({ userId: user._id });
     }
     catch (error) {
@@ -96,7 +93,6 @@ async function getUser(req, res) {
         // Recherche de l'utilisateur dans la collection "users"
         const db = client.db('MyTask');
         const collection = db.collection('users');
-        console.log('ID:', id);
         const user = await collection.findOne({ _id: new ObjectId(id) });
 
         if (user) {

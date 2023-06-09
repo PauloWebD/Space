@@ -1,9 +1,15 @@
 import React from 'react';
 import '../styles/Navbar.css'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = (props) => {
-  const { username, isLoggedIn } = props;
+  const navigate = useNavigate(); // Utiliser le hook useNavigate pour la redirection
+
+  const handleLogout = () => {
+    // Code pour gérer la déconnexion de l'utilisateur
+    sessionStorage.removeItem('token');
+    window.location.href = '/Login'; // Redirection vers la page d'accueil après la déconnexion
+  };
 
   return (
     <div className="nav">
@@ -15,19 +21,30 @@ const Navbar = (props) => {
             <li>
               <NavLink to={'/'}> Home</NavLink>
             </li>
-            <li>
-              <NavLink to={'/userPage'}> Profil</NavLink>
-            </li>
-            <li>
-              <NavLink to={'/login'}> Login</NavLink>
-            </li>
-
-            <li>
-              <NavLink to={'/signup'}> Inscription</NavLink>
-            </li>
-            <li>
-              <NavLink to={'/userPage'}> {username}</NavLink>
-            </li>
+            {props.userId ? (
+              <>
+                <li>
+                  <NavLink to={'/userPage'}> Profil</NavLink>
+                </li>
+                <li>
+                  <NavLink to={'/Home'} className='button-link'>
+                    Explorer
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink onClick={handleLogout}>Déconnexion</NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavLink to={'/login'}> Connexion</NavLink>
+                </li>
+                <li>
+                  <NavLink to={'/signup'}> Inscription</NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </nav>

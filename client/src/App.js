@@ -9,6 +9,7 @@ import UserPage from './Components/UserPage/UserPage';
 import WelcomePage from './Components/Welcome/WelcomePage';
 import React, { useState, useEffect } from "react";
 import PrivateRoute from './Components/routes/PrivateRoute';
+import Navbar from './Components/Navbar';
 
 
 function App() {
@@ -18,9 +19,7 @@ function App() {
     try {
       const token = sessionStorage.getItem("token");
       const response = await axios.post(`http://localhost:3001/api/users/verifyToken/${token}`);
-      console.log('yolo===>', response.data.userId);
       setUserId(response.data.userId);
-      console.log('userid ==>', userId);
     } catch (error) {
       console.log(error);
     }
@@ -38,6 +37,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <Navbar userId={userId} />
         <Routes>
           <Route exact path='/Home' element={<PrivateRoute />}>
             <Route exact path='/Home' element={<Planet userId={userId} />} />

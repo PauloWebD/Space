@@ -3,7 +3,6 @@ import questionsData from './questions.json';
 import './WelcomePage.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Navbar from '../Navbar';
 
 const WelcomePage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -25,6 +24,7 @@ const WelcomePage = () => {
             setCurrentQuestion(nextQuestion);
         } else {
             calculateScore();
+            window.location.href = '/userPage'; // Redirection vers la page de Profil après la déconnexion
         }
     };
 
@@ -48,7 +48,6 @@ const WelcomePage = () => {
 
         updateRankInDatabase(currentScore);
     };
-    console.log(userId);
     const updateRankInDatabase = async (currentScore) => {
         try {
             await axios.post(`http://localhost:3001/api/users/updateRank/${userId}`, {
@@ -58,7 +57,6 @@ const WelcomePage = () => {
             console.log(error);
         }
     };
-    console.log(userId);
     const getRank = (currentScore) => {
         if (currentScore >= 8) {
             return 'Expert';
@@ -78,7 +76,6 @@ const WelcomePage = () => {
 
     return (
         <div className="quizPage">
-            <Navbar />
             <div>
                 <h1>Quiz sur l'univers et le système solaire</h1>
                 {currentQuestion < totalQuestions ? (
@@ -100,12 +97,11 @@ const WelcomePage = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={handleNextQuestion}>Suivant</button>
+                        <button onClick={handleNextQuestion}>{currentQuestion + 1 === 10 ? "Terminer" : 'Suivant'}</button>
                     </div>
                 ) : (
                     <div>
                         <h2>Score: {score}</h2>
-                        <h2>Rang: {rank}</h2>
                         <button onClick={restartQuiz}>Recommencer le quiz</button>
                     </div>
                 )}
