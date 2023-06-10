@@ -7,6 +7,9 @@ dotenv.config();
 // Connexion à la base de données MongoDB
 const client = new MongoClient(process.env.MONGO_URL);
 
+
+
+
 async function createMessage(req, res) {
     const { userId, message, planet } = req.body;
 
@@ -43,7 +46,6 @@ async function createMessage(req, res) {
         console.log('Fermeture de la connexion à la base de données createMessage');
     }
 }
-
 async function getMessages(req, res) {
     const { planet } = req.params;
     try {
@@ -53,7 +55,33 @@ async function getMessages(req, res) {
         const db = client.db('MyTask');
         const collection = db.collection('messages');
         const messages = await collection.find({ planet: planet }).toArray();
-        res.json({ messages });
+
+        const userIds = messages.map(message => message.userId);
+        const usersCollection = db.collection('users');
+        const userIdMap = {};
+
+        // Récupérer les noms d'utilisateur et les ranks pour chaque ID d'utilisateur
+        for (const userId of userIds) {
+            const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+            if (user) {
+                userIdMap[userId] = { username: user.username, rank: user.rank };
+            }
+        }
+
+        console.log('Messages:', messages);
+        console.log('User IDs:', userIds);
+        console.log('User ID Map:', userIdMap);
+
+        // Ajouter le nom d'utilisateur et le rank à chaque message
+        const messagesWithUsernames = messages.map(message => ({
+            ...message,
+            username: userIdMap[message.userId]?.username,
+            rank: userIdMap[message.userId]?.rank
+        }));
+
+        console.log('Messages with Usernames:', messagesWithUsernames);
+
+        res.json({ messages: messagesWithUsernames });
     } catch (error) {
         console.error('Erreur lors de la récupération des messages', error);
         res.status(500).json({ message: 'Error retrieving messages' });
@@ -62,6 +90,10 @@ async function getMessages(req, res) {
         console.log('Fermeture de la connexion à la base de données getMessages');
     }
 }
+
+
+
+
 
 module.exports = {
     createMessage,

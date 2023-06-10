@@ -19,6 +19,7 @@ const Planet = (props) => {
   const [selectedPlanet, setSelectedPlanet] = useState('terre');
   const [currentMessage, setCurrentMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [UserName, setUserName] = useState([]);
 
   const fetchData = (selectedPlanet) => {
     fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${selectedPlanet}`)
@@ -32,6 +33,7 @@ const Planet = (props) => {
     const tempCelsius = tempKelvin - 273.15;
     return Math.round(tempCelsius * 10) / 10; // Arrondi à un chiffre après la virgule
   }
+
 
   const handlePlanetChange = (currentPlanet) => {
     setSelectedPlanet(currentPlanet);
@@ -56,12 +58,12 @@ const Planet = (props) => {
       console.error("Erreur lors de l'envoi du message", error);
     }
   };
-
+  console.log(props.userId);
   const fetchMessagesByPlanet = async (selectedPlanet) => {
     try {
-
       const response = await axios.get(`http://localhost:3001/api/messages/getMessages/${selectedPlanet}`);
       setMessages(response.data.messages);
+      console.log(response.data.messages);
     } catch (error) {
       console.log(error);
     }
@@ -80,23 +82,23 @@ const Planet = (props) => {
         <div className="planetDesc">
           <h1>{planet.name}</h1>
           <div className="planetDesc-data-desc">
-            <h2>Distance moyenne avec le Soleil:</h2>
+            <h2>Distance moyenne avec le Soleil :</h2>
             <p>{planet.semimajorAxis} kilomètres</p>
           </div>
           <div className="planetDesc-data">
-            <h3>le rayon équatorial:</h3>
+            <h3>Le rayon équatorial :</h3>
             <p>{planet.equaRadius} kilomètres</p>
           </div>
           <div className="planetDesc-data">
-            <h3>Température moyenne:</h3>
+            <h3>Température moyenne :</h3>
             <p>{convertKelvinToCelsius(planet.avgTemp)} °C</p>
           </div>
           <div className="planetDesc-data">
-            <h3>Rotation autour du soleil:</h3>
+            <h3>Rotation autour du soleil :</h3>
             <p>{planet.sideralOrbit}</p>
           </div>
           <div className="planetDesc-data">
-            <h3>Rotation sur elle-même:</h3>
+            <h3>Rotation sur elle-même :</h3>
             <p>{planet.sideralRotation}</p>
           </div>
         </div>
@@ -141,9 +143,11 @@ const Planet = (props) => {
 
           {messages.map((message, index) => (
             <div key={index} className="message">
-              {message.message}
+              {message.username}   rank : {message.rank} : {message.message}
             </div>
           ))}
+
+
         </div>
       </div>
     </div>

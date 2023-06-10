@@ -43,6 +43,7 @@ const UserPage = (props) => {
             } catch (error) {
                 console.log(error);
             }
+            return planetName;
         };
 
         fetchUserInfo();
@@ -101,30 +102,26 @@ const UserPage = (props) => {
         navigate(`/WelcomePage/${props.userId}`);
 
     };
-
+    console.log(userInfo?.favoritePlanet);
 
     return (
         <div>
-            <h1>Page utilisateur</h1>
             {userInfo && (
                 <div>
-                    <p>Nom d'utilisateur : {userInfo.username}</p>
+                    <h1>Bonjour {userInfo.username}</h1>
                     <p>Rang : {userInfo.rank}</p>
                     <p>Planète favorite : {userInfo.favoritePlanet}</p>
                     <button onClick={navigateToWelcome}>Augmente ton rank ICI  !! </button>
                     <br />
-                    <button>
-                        <NavLink to={'/'}> Home</NavLink>
-                    </button>
                     {planetInfo && (
                         <div>
-                            <h1>Informations sur la planète favorite :</h1>
-                            <p>Distance moyenne avec le Soleil: {planetInfo.semimajorAxis} kilomètres</p>
-                            <p>Rayon équatorial: {planetInfo.equaRadius} kilomètres</p>
-                            <p>Température moyenne: {convertKelvinToCelsius(planetInfo.avgTemp)} °C</p>
-                            <p>Rotation autour du Soleil: {planetInfo.sideralOrbit}</p>
-                            <p>Rotation sur elle-même: {planetInfo.sideralRotation}</p>
-                            <p>Nombre de lunes: {planetInfo?.moons?.length || 0}</p>
+                            <h1>Informations sur  {userInfo?.favoritePlanet} : </h1>
+                            <p>Distance moyenne avec le Soleil : {planetInfo.semimajorAxis} kilomètres</p>
+                            <p>Rayon équatorial : {planetInfo.equaRadius} kilomètres</p>
+                            <p>Température moyenne : {convertKelvinToCelsius(planetInfo.avgTemp)} °C</p>
+                            <p>Rotation autour du Soleil : {planetInfo.sideralOrbit}</p>
+                            <p>Rotation sur elle-même : {planetInfo.sideralRotation}</p>
+                            <p>Nombre de lunes : {planetInfo?.moons?.length || 0}</p>
                         </div>
                     )}
                 </div>
@@ -137,20 +134,6 @@ const UserPage = (props) => {
                     </Canvas>
                 </div>
             </div>
-            {/* <div className="message">
-                <h1>Messages :</h1>
-                {messages.length > 0 ? (
-                    messages.map((message) => (
-                        <p key={message._id}>{message.message}</p>
-                    ))
-                ) : (
-                    <p>Aucun message</p>
-                )}
-            </div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={message} onChange={handleChange} />
-                <button type="submit">Envoyer</button>
-            </form> */}
         </div>
     );
 };

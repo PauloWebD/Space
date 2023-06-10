@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
 import { TextureLoader, DoubleSide } from 'three';
-import * as THREE from "three";
-import { NavLink } from 'react-router-dom';
 
 import './SystemeSolaire.css';
 

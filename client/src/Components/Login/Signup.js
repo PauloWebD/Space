@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { NavLink } from 'react-router-dom';
 
@@ -8,13 +8,18 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
-
     const [favoritePlanet, setFavoritePlanet] = useState('');
-
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError(null);
+
+        // Check if all fields are filled
+        if (!isFormValid) {
+            setError('Please fill all fields');
+            return;
+        }
 
         // Check that the password and confirmation match
         if (password !== confirmPassword) {
@@ -45,15 +50,35 @@ const Signup = () => {
             setError('Error signing up');
         }
     };
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+
+        if (name === 'username') {
+            setUsername(value);
+        } else if (name === 'password') {
+            setPassword(value);
+        } else if (name === 'confirmPassword') {
+            setConfirmPassword(value);
+        } else if (name === 'email') {
+            setEmail(value);
+        }
+    };
+
     const handlePlanetChange = (event) => {
         setFavoritePlanet(event.target.value);
     };
+
     const planets = ['Mercure', 'Venus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune'];
 
+    useEffect(() => {
+        // Check if all fields are filled
+        setIsFormValid(username !== '' && password !== '' && confirmPassword !== '' && email !== '' && favoritePlanet !== '');
+    }, [username, password, confirmPassword, email, favoritePlanet]);
 
     return (
         <div className="all">
-            <NavLink to={'/Login'}> Déjà inscrit clic ICI</NavLink>
+            <NavLink to={'/Login'}> Déjà inscrit ? Cliquez ICI</NavLink>
             <div className="PageSignup">
                 <div className="signup">
                     <h1>Signup Page</h1>
@@ -64,7 +89,7 @@ const Signup = () => {
                             id="username"
                             name="username"
                             value={username}
-                            onChange={(event) => setUsername(event.target.value)}
+                            onChange={handleInputChange}
                         />
 
                         <label htmlFor="password">Password:</label>
@@ -73,7 +98,7 @@ const Signup = () => {
                             id="password"
                             name="password"
                             value={password}
-                            onChange={(event) => setPassword(event.target.value)}
+                            onChange={handleInputChange}
                         />
 
                         <label htmlFor="confirmPassword">Confirm Password:</label>
@@ -82,7 +107,7 @@ const Signup = () => {
                             id="confirmPassword"
                             name="confirmPassword"
                             value={confirmPassword}
-                            onChange={(event) => setConfirmPassword(event.target.value)}
+                            onChange={handleInputChange}
                         />
 
                         <label htmlFor="email">Email:</label>
@@ -91,8 +116,9 @@ const Signup = () => {
                             id="email"
                             name="email"
                             value={email}
-                            onChange={(event) => setEmail(event.target.value)}
+                            onChange={handleInputChange}
                         />
+
                         <label>
                             <p>Favorite planet:</p>
                             <select value={favoritePlanet} onChange={handlePlanetChange}>
@@ -106,7 +132,11 @@ const Signup = () => {
 
                         {error && <div className="error">{error}</div>}
 
-                        <button type="submit">Signup</button>
+                        {isFormValid ? (
+                            <button type="submit">Signup</button>
+                        ) : (
+                            <div className="error">Please fill all fields</div>
+                        )}
                     </form>
                 </div>
             </div>

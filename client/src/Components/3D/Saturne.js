@@ -11,8 +11,6 @@ const Saturn = (props) => {
     const name = 'Saturn';
 
     useFrame((state) => {
-        // meshRef.current.position.x = Math.sin(state.clock.getElapsedTime() * 0.019) * 400;
-        // meshRef.current.position.z = Math.cos(state.clock.getElapsedTime() * 0.019) * 400;
         meshRef.current.rotation.y += 0.01;
         ringRef.current.rotation.y += 0.01;
     });

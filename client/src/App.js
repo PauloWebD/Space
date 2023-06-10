@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Planet from './Components/Planetes/Planet';
 import Home from './Components/Home/Home';
@@ -29,7 +29,7 @@ function App() {
     verifyToken();
   }, [userId]);
 
-
+  console.log(userId);
   const handleChildPropChange = (value) => {
     setUserId(value);
   };
@@ -42,7 +42,7 @@ function App() {
           <Route exact path='/Home' element={<PrivateRoute />}>
             <Route exact path='/Home' element={<Planet userId={userId} />} />
           </Route>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home userId={userId} />} />
           <Route path="/login" element={<Login onPropChange={handleChildPropChange} />} />
           <Route path="/signup" element={<Signup />} />
           <Route exact path='/userPage' element={<PrivateRoute />}>
