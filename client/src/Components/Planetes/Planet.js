@@ -14,6 +14,9 @@ import Venus from "../3D/Venus";
 import Neptune from "../3D/Neptune";
 import "./Planet.css";
 
+import ChatBox from "../Chat/ChatBox";
+
+
 const Planet = (props) => {
   const [planet, setPlanet] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState('terre');
@@ -58,7 +61,8 @@ const Planet = (props) => {
       console.error("Erreur lors de l'envoi du message", error);
     }
   };
-  console.log(props.userId);
+
+
   const fetchMessagesByPlanet = async (selectedPlanet) => {
     try {
       const response = await axios.get(`http://localhost:3001/api/messages/getMessages/${selectedPlanet}`);
@@ -149,6 +153,7 @@ const Planet = (props) => {
 
 
         </div>
+        <ChatBox userId={props.userId} />
       </div>
     </div>
   );
