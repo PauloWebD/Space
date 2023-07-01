@@ -11,3 +11,16 @@
     height: 50vh;
     border: 1px solid white;
 }
+
+.User {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.user-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,99 +1,114 @@
-h1{
+h1 {
   z-index: 100;
 }
+
 .planetPage {
-    color: white;
+  color: white;
 }
 
 .planetAll {
-    width: 100vw;
-    height: 90vh;
-    position: absolute;
-    margin-top: 4em;
+  width: 100vw;
+  height: 90vh;
+  position: absolute;
+  margin-top: 4em;
 
 }
 
 .planetDesc {
-    width: 50vw;
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50vw;
 }
 
 .planetDesc-data {
-    display: flex;
-    align-content: center;
-    justify-content: space-evenly;
-    align-items: center;
+  display: flex;
+  align-content: center;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .planetVisu {
-    width: 50vw;
+  width: 50vw;
 }
-.planetPage {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .planetAll {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 2rem 0;
-  }
-  
-  .planetDesc {
-   
-    margin-bottom: 1rem;
-  }
-  
-  .planetDesc h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .planetDesc-data {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-  
-  .planetDesc-data h3 {
-    font-weight: bold;
-    margin-right: 1rem;
-  }
-  
-  .planetVisu {
-    margin: 2%;
-    border: 3px solid;
-    border-radius: 10%;
-    height: 60%;
-    width: 40%;
-    z-index: 100;
-  }
 
-  
-  button {
-    margin-right: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .accordion-title {
-    font-size: 1.2rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    cursor: pointer;
-  }
-  .planetButton button {
-    z-index: 99;
-    border-radius: 10%;
-    border: inset #213841;
-   
-  }
-  .planetButton button:hover {
-    border: outset #213841;
-  
-  }
+.planetPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.planetAll {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.planetDesc {
+
+  margin-bottom: 1rem;
+}
+
+.planetDesc h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.planetDesc-data {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.planetDesc-data h3 {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.planetVisu {
+  margin: 2%;
+  border: 3px solid;
+  border-radius: 10%;
+  height: 60%;
+  width: 40%;
+  z-index: 100;
+}
+
+
+button {
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+}
+
+.accordion-title {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.planetButton button {
+  z-index: 99;
+  border-radius: 10%;
+  border: inset #213841;
+
+}
+
+.planetButton button:hover {
+  border: outset #213841;
+
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

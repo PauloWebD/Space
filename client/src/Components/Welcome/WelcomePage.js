@@ -4,6 +4,10 @@ import './WelcomePage.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+import rankImageExpert from '../3D/assets/rank/1.png';
+import rankImageAvance from '../3D/assets/rank/3.png';
+import rankImageDebutant from '../3D/assets/rank/2.png';
+
 const WelcomePage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
@@ -48,6 +52,7 @@ const WelcomePage = () => {
 
         updateRankInDatabase(currentScore);
     };
+
     const updateRankInDatabase = async (currentScore) => {
         try {
             await axios.post(`http://localhost:3001/api/users/updateRank/${userId}`, {
@@ -57,6 +62,7 @@ const WelcomePage = () => {
             console.log(error);
         }
     };
+
     const getRank = (currentScore) => {
         if (currentScore >= 8) {
             return 'Expert';
@@ -80,24 +86,30 @@ const WelcomePage = () => {
                 <h1>Quiz sur l'univers et le système solaire</h1>
                 {currentQuestion < totalQuestions ? (
                     <div>
-                        <p>Question {currentQuestion + 1} sur {totalQuestions}</p>
-                        <p>{questionsData[currentQuestion].question}</p>
-                        <ul>
-                            {questionsData[currentQuestion].options.map((option, optionIndex) => (
-                                <li key={optionIndex}>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name={`question-${currentQuestion}`}
-                                            value={option}
-                                            onChange={() => handleAnswerSelect(option)}
-                                        />
-                                        {option}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                        <button onClick={handleNextQuestion}>{currentQuestion + 1 === 10 ? "Terminer" : 'Suivant'}</button>
+
+                        <div>
+                            {rank === 'Expert' && <img src={rankImageExpert} alt="Rank" />} {/* Image pour le rang "Expert" */}
+                            {rank === 'Avancé' && <img src={rankImageAvance} alt="Rank" />} {/* Image pour le rang "Avancé" */}
+                            {rank === 'Débutant' && <img src={rankImageDebutant} alt="Rank" />} {/* Image pour le rang "Débutant" */}
+                            <p>Question {currentQuestion + 1} sur {totalQuestions}</p>
+                            <p>{questionsData[currentQuestion].question}</p>
+                            <ul>
+                                {questionsData[currentQuestion].options.map((option, optionIndex) => (
+                                    <li key={optionIndex}>
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name={`question-${currentQuestion}`}
+                                                value={option}
+                                                onChange={() => handleAnswerSelect(option)}
+                                            />
+                                            {option}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={handleNextQuestion}>{currentQuestion + 1 === 10 ? "Terminer" : 'Suivant'}</button>
+                        </div>
                     </div>
                 ) : (
                     <div>

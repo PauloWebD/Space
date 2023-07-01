@@ -1,4 +1,4 @@
-*{
+* {
   background-image: url(./Components/3D/assets/galaxy.png)
 }
 
@@ -15,7 +15,7 @@
 /* FIN VARIABLES COULEURS */
 .App {
   text-align: center;
-  
+
 }
 
 .App-logo {
@@ -48,7 +48,12 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+h1 {
+  font-style: oblique;
 }

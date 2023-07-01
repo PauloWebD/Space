@@ -1,33 +1,50 @@
 import React from 'react';
-import '../styles/Navbar.css'
+import '../styles/Navbar.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const Navbar = (props) => {
-  const navigate = useNavigate(); // Utiliser le hook useNavigate pour la redirection
+
+import rankImageExpert from '../Components/3D/assets/rank/1.png';
+import rankImageAvance from '../Components/3D/assets/rank/3.png';
+import rankImageDebutant from '../Components/3D/assets/rank/2.png';
+
+const Navbar = ({ userId, userName, userRank }) => {
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Code pour gérer la déconnexion de l'utilisateur
     sessionStorage.removeItem('token');
     window.location.href = '/Login'; // Redirection vers la page d'accueil après la déconnexion
+  };
+
+  const getRankImage = () => {
+    if (userRank === 'Expert') {
+      return rankImageExpert;
+    } else if (userRank === 'Avancé') {
+      return rankImageAvance;
+    } else {
+      return rankImageDebutant;
+    }
   };
 
   return (
     <div className="nav">
       <nav className="navigation">
-        <div className="brand-nam">
-        </div>
+        <div className="brand-nam"></div>
         <div className="navigation-menu">
           <ul>
+            <li className="username">
+              {userName}
+              {userRank && <img className='rank-nav' src={getRankImage()} alt="Rank" />}
+            </li>
             <li>
               <NavLink to={'/'}> Home</NavLink>
             </li>
-            {props.userId ? (
+            {userId ? (
               <>
                 <li>
                   <NavLink to={'/userPage'}> Profil</NavLink>
                 </li>
                 <li>
-                  <NavLink to={'/Home'} className='button-link'>
+                  <NavLink to={'/Home'} className="button-link">
                     Explorer
                   </NavLink>
                 </li>

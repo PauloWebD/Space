@@ -14,10 +14,13 @@ import Venus from "../3D/Venus";
 import Neptune from "../3D/Neptune";
 import "./Planet.css";
 
-import ChatBox from "../Chat/ChatBox";
+import rankImageExpert from '../3D/assets/rank/1.png';
+import rankImageAvance from '../3D/assets/rank/3.png';
+import rankImageDebutant from '../3D/assets/rank/2.png';
 
 
-const Planet = (props) => {
+
+const Planet = ({ userId, userRank }) => {
   const [planet, setPlanet] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState('terre');
   const [currentMessage, setCurrentMessage] = useState('');
@@ -48,7 +51,7 @@ const Planet = (props) => {
     // Envoyer le message au serveur
     try {
       await axios.post("http://localhost:3001/api/messages/createMessage", {
-        userId: props.userId,
+        userId: userId,
         planet: selectedPlanet,
         message: currentMessage,
       });
@@ -80,6 +83,15 @@ const Planet = (props) => {
 
   }, [selectedPlanet]);
 
+  const getRankImage = (rank) => {
+    if (rank === 'Expert') {
+      return rankImageExpert;
+    } else if (rank === 'Avancé') {
+      return rankImageAvance;
+    } else {
+      return rankImageDebutant;
+    }
+  };
   return (
     <div className="planetPage">
       <div className="planetAll">
@@ -134,7 +146,7 @@ const Planet = (props) => {
           <button onClick={() => handlePlanetChange("uranus")}>Uranus</button>
         </div>
         <div className="planetMessages">
-          <h1>Message pour {selectedPlanet}</h1>
+          <h1>Commentaires pour {selectedPlanet}</h1>
           <form onSubmit={sendMessage}>
             <input
               type="text"
@@ -147,13 +159,14 @@ const Planet = (props) => {
 
           {messages.map((message, index) => (
             <div key={index} className="message">
-              {message.username}   rank : {message.rank} : {message.message}
+              {message.username} {<img src={getRankImage(message.rank)} alt="Rank" />} : {message.message}
             </div>
           ))}
 
 
+
+
         </div>
-        <ChatBox userId={props.userId} />
       </div>
     </div>
   );

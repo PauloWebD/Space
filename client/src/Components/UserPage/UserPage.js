@@ -14,6 +14,12 @@ import Venus from '../3D/Venus';
 import Neptune from '../3D/Neptune';
 import './UserPage.css';
 
+
+import rankImageExpert from '../3D/assets/rank/1.png';
+import rankImageAvance from '../3D/assets/rank/3.png';
+import rankImageDebutant from '../3D/assets/rank/2.png';
+
+
 const UserPage = (props) => {
     const [userInfo, setUserInfo] = useState(null);
     const [planetInfo, setPlanetInfo] = useState(null);
@@ -104,12 +110,25 @@ const UserPage = (props) => {
     };
     console.log(userInfo?.favoritePlanet);
 
+    const getRankImage = () => {
+        if (userInfo?.rank === 'Expert') {
+            return rankImageExpert;
+        } else if (userInfo?.rank === 'Avancé') {
+            return rankImageAvance;
+        } else {
+            return rankImageDebutant;
+        }
+    };
+
     return (
-        <div>
+        <div className='User'>
             {userInfo && (
                 <div>
                     <h1>Bonjour {userInfo.username}</h1>
-                    <p>Rang : {userInfo.rank}</p>
+                    <p className="user-rank">
+                        {userInfo.rank}
+                        {userInfo.rank && <img src={getRankImage()} alt="Rank" />} {/* Ajoutez cette ligne pour afficher l'image du rang */}
+                    </p>
                     <p>Planète favorite : {userInfo.favoritePlanet}</p>
                     <button onClick={navigateToWelcome}>Augmente ton rank ICI  !! </button>
                     <br />
