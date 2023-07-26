@@ -44,23 +44,11 @@ app.get('/api/messages/createMessage', (req, res) => {
     res.send('Hello, World!');
 });
 const client = new MongoClient(process.env.MONGO_URL);
-app.get('/api/messages', async (req, res) => {
 
-
-    try {
-        const db = client.db('MyTask');
-        const collection = db.collection('messages');
-        const messages = await collection.find().toArray();
-        res.json({ messages });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des messages', error);
-        res.status(500).json({ message: 'Erreur lors de la récupération des messages' });
-    }
-});
 
 app.get('/api/users/allUsers', adminController.getAllUsers);
-app.get('/api/users/updateRank', adminController.updateRank);
-app.delete('/api/users/deleteUsers', adminController.deleteUser);
+app.delete('/api/users/deleteUser/:userId', adminController.deleteUser);
+app.put('/api/users/updateUserRank/:userId', adminController.updateUserRank);
 
 
 

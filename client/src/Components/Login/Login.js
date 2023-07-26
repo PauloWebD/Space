@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
@@ -14,12 +14,11 @@ const Login = ({ onPropChange }) => {
         try {
             const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
             setUserInfo(response.data.user);
+
         } catch (error) {
             console.log(error);
         }
     };
-
-    // ... Votre code existant
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -53,7 +52,6 @@ const Login = ({ onPropChange }) => {
                 }
             });
     };
-
 
     return (
         <div className="all">

@@ -7,8 +7,9 @@ const userSchema = new mongoose.Schema({
     email: String,
     favoritePlanet: String,
     rank: {
-        type: Number,
-        default: 0
+        type: String,
+        enum: ['Débutant', 'Avancé', 'Expert'],
+        default: 'Débutant',
     },
     isAdmin: {
         type: Boolean,
