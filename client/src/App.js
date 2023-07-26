@@ -10,6 +10,7 @@ import WelcomePage from './Components/Welcome/WelcomePage';
 import React, { useState, useEffect } from 'react';
 import PrivateRoute from './Components/routes/PrivateRoute';
 import Navbar from './Components/Navbar';
+import Dashboard from './Components/admin/Dashboard';
 
 function App() {
   const [userId, setUserId] = useState('');
@@ -71,6 +72,9 @@ function App() {
           </Route>
           <Route exact path="/WelcomePage/:userId" element={<PrivateRoute />}>
             <Route path="/WelcomePage/:userId" element={<WelcomePage />} />
+          </Route>
+          <Route exact path="/dashboard" element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </div>

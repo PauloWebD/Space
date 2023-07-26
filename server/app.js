@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const { connectDB } = require('./db');
 const { MongoClient } = require('mongodb');
+const adminController = require('./controllers/adminController');
+
 
 // Middleware pour parser le corps des requêtes au format JSON
 app.use(bodyParser.json());
@@ -30,8 +32,10 @@ mongoose.connect(process.env.MONGO_URL, {
 // Import des routes
 const userRoutes = require('./routes/userRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Utilisation des routes
+app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 
@@ -53,6 +57,10 @@ app.get('/api/messages', async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la récupération des messages' });
     }
 });
+
+app.get('/api/users/allUsers', adminController.getAllUsers);
+app.get('/api/users/updateRank', adminController.updateRank);
+app.delete('/api/users/deleteUsers', adminController.deleteUser);
 
 
 

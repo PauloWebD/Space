@@ -8,4 +8,5 @@ router.post('/verifyToken/:token', userController.verifyToken);
 router.get('/getUser/:id', userController.getUser);
 router.post('/updateRank/:userId', userController.updateRank); // Ajoutez cette ligne
 
+
 module.exports = router;

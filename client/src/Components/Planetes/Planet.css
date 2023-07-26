@@ -1,7 +1,3 @@
-h1 {
-  z-index: 100;
-}
-
 .planetPage {
   color: white;
 }
@@ -54,7 +50,6 @@ h1 {
 }
 
 .planetDesc h1 {
-  font-size: 3rem;
   margin-bottom: 1rem;
 }
 
@@ -111,4 +106,11 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.planetMessages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

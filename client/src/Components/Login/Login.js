@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
@@ -14,11 +14,12 @@ const Login = ({ onPropChange }) => {
         try {
             const response = await axios.get(`http://localhost:3001/api/users/getUser/${userId}`);
             setUserInfo(response.data.user);
-
         } catch (error) {
             console.log(error);
         }
     };
+
+    // ... Votre code existant
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,8 +33,17 @@ const Login = ({ onPropChange }) => {
                 const userId = response.data.user._id;
                 onPropChange(userId);
                 fetchUserInfo(userId);
-                sessionStorage.setItem('token', userId);
-                navigate('/userPage'); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
+
+                // Enregistrer le token dans le sessionStorage
+                const token = response.data.token;
+                sessionStorage.setItem('token', token);
+
+                // Vérifier si l'utilisateur est un administrateur
+                if (response.data.user.isAdmin) {
+                    navigate('/dashboard'); // Rediriger vers la page d'administration pour l'administrateur
+                } else {
+                    navigate('/userPage'); // Naviguer vers la page userPage en incluant l'ID de l'utilisateur
+                }
             })
             .catch(error => {
                 if (error.response) {
@@ -42,7 +52,8 @@ const Login = ({ onPropChange }) => {
                     setErrorMessage('Network error. Please try again later.');
                 }
             });
-    }
+    };
+
 
     return (
         <div className="all">

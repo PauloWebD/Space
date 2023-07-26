@@ -98,7 +98,7 @@ const Planet = ({ userId, userRank }) => {
         <div className="planetDesc">
           <h1>{planet.name}</h1>
           <div className="planetDesc-data-desc">
-            <h2>Distance moyenne avec le Soleil :</h2>
+            <h3>Distance moyenne avec le Soleil :</h3>
             <p>{planet.semimajorAxis} kilomètres</p>
           </div>
           <div className="planetDesc-data">

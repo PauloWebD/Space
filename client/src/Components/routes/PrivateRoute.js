@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoute = () => {
@@ -6,27 +6,23 @@ const PrivateRoute = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Vérifier si un token est présent dans le sessionStorage
         const storedToken = sessionStorage.getItem('token');
         if (storedToken) {
-            // Décoder le token JWT
             try {
-                if (storedToken) {
-                    setIsAuthenticated(true);
-                }
+                // Effectuer ici des vérifications supplémentaires du token si nécessaire
+                setIsAuthenticated(true);
             } catch (error) {
                 console.log('Invalid token');
             }
         }
-        setIsLoading(false); // Met à jour isLoading une fois la vérification terminée
+        setIsLoading(false);
     }, []);
 
     if (isLoading) {
-        // Afficher un indicateur de chargement pendant la vérification
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/Signup" />;
-}
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
 
 export default PrivateRoute;

@@ -21,7 +21,7 @@ async function signup(req, res) {
             password,
             email,
             favoritePlanet,
-            rank: 'Débutant' // Par défaut, le rang est défini à "Débutant"
+            rank: 'Débutant',
         });
 
         console.log('Utilisateur créé avec succès');
@@ -144,6 +144,7 @@ const updateRank = async (req, res) => {
         console.log('Fermeture de la connexion à la base de données updateRank');
     }
 };
+
 
 
 module.exports = {
